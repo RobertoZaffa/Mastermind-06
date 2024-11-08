@@ -1,0 +1,9 @@
+﻿I'm sorry, but errors were detected in your script. Please correct the
+errors listed below, and try again.
+
+
+File "game/script.rpy", line 316: invalid syntax
+                        if secret_code == 
+
+Ren'Py Version: Ren'Py 8.2.1.24030407
+Fri Apr 26 09:52:02 2024

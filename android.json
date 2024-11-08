@@ -1,0 +1,24 @@
+{
+    "expansion": false,
+    "google_play_key": null,
+    "google_play_salt": null,
+    "heap_size": "3",
+    "icon_name": "Master Mind",
+    "include_pil": false,
+    "include_sqlite": false,
+    "layout": null,
+    "name": "Master Mind",
+    "numeric_version": 1,
+    "orientation": "portrait",
+    "package": "org.altervista.mastermind",
+    "permissions": [
+        "VIBRATE",
+        "INTERNET"
+    ],
+    "source": false,
+    "store": "play",
+    "update_always": true,
+    "update_icons": true,
+    "update_keystores": true,
+    "version": "2.0"
+}

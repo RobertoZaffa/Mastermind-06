@@ -1,0 +1,1 @@
+{"package": "com.mastermind", "name": "Master Mind", "icon_name": "Master Mind", "version": "2.0", "numeric_version": 1, "orientation": "portrait", "permissions": ["VIBRATE", "INTERNET"], "include_pil": false, "include_sqlite": false, "layout": null, "source": false, "expansion": false, "store": "play", "update_icons": true, "update_always": true, "heap_size": "3"}
