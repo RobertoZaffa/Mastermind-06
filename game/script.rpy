@@ -29,6 +29,8 @@ init 1 python:
                 game1(colors)
             if persistent.choice == "game4":
                 game4(colors)
+            if persistent.choice == "quit":
+                return
             renpy.pause()
 
     def game1 (colors):   #game player > app
@@ -561,7 +563,6 @@ screen mm_menu():   # è il menu contestualizzato al richiamo delle modalità di
                     action Hide("mm_menu"), Show("score"), Return()
                 textbutton "• PREFERENCES":
                     action Hide("mm_menu"), Show("preferences"), Return()
-                
                     #action Hide("mm_menu"), Function(reset_score), Return()
                 # if persistent.best_code_active:
                 #     textbutton "• DISABLE BEST CODE":
@@ -585,6 +586,9 @@ screen mm_menu():   # è il menu contestualizzato al richiamo delle modalità di
                     action Hide("mm_menu"), SetVariable("persistent.choice", "cancel"), Return()
             textbutton "• HELP AND TIPS":
                 action Hide("mm_menu"), Show("tips"), Return()
+            if persistent.choice != "game1_6" and persistent.choice != "game4":
+                textbutton "• CLOSE THE APP":
+                    action Hide("mm_menu"), SetVariable("persistent.choice", "quit"), Return()
             # textbutton "• Game Rules":
             #     action Hide("mm_menu"), OpenURL("https://mastermind.altervista.org/rules-of-the-game/"), Return()
 
