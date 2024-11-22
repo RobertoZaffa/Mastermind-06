@@ -267,3 +267,5 @@ default persistent.total_time = 0
 default persistent.total_time_converted = [0,0,0]
 default persistent.welcome = True
 default persistent.sound = False
+
+default colors = 6

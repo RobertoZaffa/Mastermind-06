@@ -14,6 +14,8 @@ init 1 python:
         renpy.show_screen ("mm_menu_button")    #screen richiamato solo da qua
         renpy.show_screen("score_update")
         persistent.choice = "none"
+        global colors
+        colors = 6
         if persistent.sound:
             renpy.music.play ("audio/Gershon Kingsley - Pop Corn 1969.mp3")
         if persistent.welcome:
@@ -30,8 +32,8 @@ init 1 python:
             renpy.pause()
 
     def game1(colors):   #game player > app
-        # """ il giocatore deve indovinare il codice segreto scelto dal programma """   
-        global clicked          
+        """ il giocatore deve indovinare il codice segreto scelto dal programma """   
+        global clicked          #usata anche da input_game1
         global secret_code
         global draggable
         global droppable
@@ -51,30 +53,28 @@ init 1 python:
         #secret_code = mm.code_adapter("2635")                               #utilizzo di CS fisso per debugging
         thread = CustomThread(target=mm.nothing())          # per fare in modo che il test  if not thread.is_alive():  in mm_menu non dia errore con row = 1
         thread.start()
-        thread.join()         
+        thread.join()   
         key_board = []
         board = []
         copilot = [True] * (colors+1) 
         reset_board()
         blacks = 0          # serve per evitare errori nel richiamo di final 
         start_time = time.time()
-        renpy.hide_screen ("final_update") # nasconde lo screen che aveva aperto lo shield e visualizzato il codice segreto della partita precedente 
-        #renpy.show_screen("board_update") # non necessaria perchè già presente in inserting_code
-        renpy.play("audio/close.mp3")
-        persistent.status = "on_game"
-        # renpy.hide_screen("open_shield")        # superflua. Lo shield viene chiuso già da final_update
-        # if persistent.status == "final":              # si passa da una partita finita a una che inizia
-        #     renpy.hide_screen("board_update")
-        #     renpy.play("audio/close.mp3")
-        #     persistent.status = "on_game"
-        #renpy.show_screen("board_update")
+        renpy.hide_screen ("final_update")          # rimuove lo shield aperto della partita precedente
+        renpy.hide_screen("open_shield")
+        #secret_code = code_adapter (generate_secret_code(colors))
+        if persistent.status == "final":              # si passa da una partita finita a una che inizia
+            renpy.hide_screen("board_update")
+            renpy.play("audio/close.mp3")
+            persistent.status = "on_game"
+        renpy.show_screen("board_update")
         for row in range (1, 11):  #le giocate massime sono 10 
             code = [0,0,0,0] #giocata corrente vuota
             # if row == 1:            # per troubleshooting
             #     code = [1,2,3,1]
             inserting_code = True
             clicked = 99
-            while inserting_code:       #fase di input + test dei clic/drag&drop
+            while inserting_code:
                 draggable = False
                 droppable = False
                 if persistent.status == "best_code" and best_code_ready == True:
@@ -131,31 +131,27 @@ init 1 python:
                     renpy.call_screen ("attempt_info", chance, tot_lc, left_code, left_code_bs, code_status, bs_inconsistent)
                 renpy.show_screen ("board_update")
                 renpy.call_screen ("input_game1", row, colors, code)
-
-                code = dragged_code(row, code, draggable, droppable)
-
-                # for peg in range (1, colors+1):     # se è stato droppato un peg della colonna esterna, viene aggiornato code[]
-                #     for hole in range (1,5):        
-                #         if draggable == "peg_" + str(peg) and droppable == "hole_" + str(hole):
-                #             code[hole-1] = peg
-                #             renpy.play("audio/peg.mp3")
-                # for dropped in range (0,4):    # se un peg è stato rimosso dalla giocata, viene tolto da code[]
-                #     if draggable == "dropped_peg_" + str(dropped) and droppable == "empty_bg":
-                #         code[dropped] = 0
-                #         renpy.play("audio/drag_out.ogg")
-                #     for hole in range (1,5):    # un peg può essere spostato da un buco ad un altro
-                #         if draggable == "dropped_peg_" + str(dropped) and droppable == "hole_" + str(hole):
-                #             if hole-1 != dropped:       # se il peg non è rilasciato nel suo buco iniziale
-                #                 code[hole-1] = code[dropped]
-                #                 code[dropped] = 0
-                #             renpy.play("audio/peg.mp3")
-                #     for i in range (1,row+1):       # drag dei peg dalle righe precedenta a quella attuale 
-                #         for j in range (1, 5):      
-                #             for hole in range (1,5):
-                #                 if draggable == "dropped_peg_prec" + str(i-1) + str(j-1) and droppable == "hole_" + str(hole):
-                #                     code[hole-1] = board[i-1][j]
-                #                     renpy.play("audio/peg.mp3")
-                
+                for peg in range (1, colors+1):     # se è stato droppato un peg della colonna esterna, viene aggiornato code[]
+                    for hole in range (1,5):        
+                        if draggable == "peg_" + str(peg) and droppable == "hole_" + str(hole):
+                            code[hole-1] = peg
+                            renpy.play("audio/peg.mp3")
+                for dropped in range (0,4):    # se un peg è stato rimosso dalla giocata, viene tolto da code[]
+                    if draggable == "dropped_peg_" + str(dropped) and droppable == "empty_bg":
+                        code[dropped] = 0
+                        renpy.play("audio/drag_out.ogg")
+                    for hole in range (1,5):    # un peg può essere spostato da un buco ad un altro
+                        if draggable == "dropped_peg_" + str(dropped) and droppable == "hole_" + str(hole):
+                            if hole-1 != dropped:       # se il peg non è rilasciato nel suo buco iniziale
+                                code[hole-1] = code[dropped]
+                                code[dropped] = 0
+                            renpy.play("audio/peg.mp3")
+                    for i in range (1,row+1):       # drag dei peg dalle righe precedenta a quella attuale 
+                        for j in range (1, 5):      
+                            for hole in range (1,5):
+                                if draggable == "dropped_peg_prec" + str(i-1) + str(j-1) and droppable == "hole_" + str(hole):
+                                    code[hole-1] = board[i-1][j]
+                                    renpy.play("audio/peg.mp3")
                 for i in range(1,5):        #aggiorna la board con la giocata che si sta inserendo
                     board[row][i] = code[i-1]
                 copilot = [True] * (colors+1) 
@@ -165,7 +161,7 @@ init 1 python:
                     inserting_code = False
                     code_played = mm.code_adapter (str(code[0])+str(code[1])+str(code[2])+str(code[3]))
                     copilot = [True] * (colors+1) 
-                    whites, blacks = mm.find_keycode(secret_code, code_played)               
+                    whites, blacks = mm.find_keycode(secret_code, code_played)      #trova il codice chiave confrontando il cod tentativo con il cod segreto         
                     keycode = converti_keycode (whites, blacks)
                     for i in range(0,4):
                         key_board[row][i] = keycode[i]
@@ -216,6 +212,8 @@ init 1 python:
         global board
         global yes_no
         global secret
+        global secret_code
+        global clicked
         mm = Mastermind_Engine()
         persistent.status = "on_game"
         key_board = []
@@ -228,39 +226,36 @@ init 1 python:
         renpy.hide_screen ("final_update")          # rimuove lo shield aperto della partita precedente
         renpy.hide_screen ("open_shield")
         renpy.hide_screen("board_update") 
-        renpy.call_screen ("secret_code_game", "In GAME-2 the App will guess your secret code.\n\n Do you want to enter the secret code or keep it in mind?")
+        renpy.call_screen ("secret_code_game4", "In GAME-2 the App will guess your secret code.\n\n Do you want to enter the secret code or keep it in mind?")
         if secret == "Enter":
+            #narrator ("inizio ciclo")
             renpy.show_screen("open_shield")
             while not clicked == 10:       
                 draggable = False
                 droppable = False
                 renpy.show_screen("board_update")
-                renpy.call_screen ("enter_secret_code_game", colors, secret_code)
-
-                secret_code = dragged_secret_code(secret_code, draggable, droppable)
-
-                # for peg in range (1, colors+1):     # se è stato droppato un peg della colonna esterna, viene aggiornato code[]
-                #     for hole in range (1,5):        
-                #         if draggable == "peg_" + str(peg) and droppable == "hole_" + str(hole):
-                #             secret_code[hole-1] = peg
-                #             renpy.play("audio/peg.mp3")
-                # for dropped in range (0,4):    # se un peg è stato rimosso dalla giocata, viene tolto da secret_code[]
-                #     if draggable == "dropped_peg_" + str(dropped) and droppable == "empty_bg":
-                #         secret_code[dropped] = 0
-                #         renpy.play("audio/drag_out.ogg")
-                #     for hole in range (1,5):    # un peg può essere spostato da un buco ad un altro
-                #         if draggable == "dropped_peg_" + str(dropped) and droppable == "hole_" + str(hole):
-                #             if hole-1 != dropped:       # se il peg non è rilasciato nel suo buco iniziale
-                #                 secret_code[hole-1] = secret_code[dropped]
-                #                 secret_code[dropped] = 0
-                #             renpy.play("audio/peg.mp3")
-                
-                
+                renpy.call_screen ("enter_secret_code_game4", colors, secret_code)
+                for peg in range (1, colors+1):     # se è stato droppato un peg della colonna esterna, viene aggiornato code[]
+                    for hole in range (1,5):        
+                        if draggable == "peg_" + str(peg) and droppable == "hole_" + str(hole):
+                            secret_code[hole-1] = peg
+                            renpy.play("audio/peg.mp3")
+                for dropped in range (0,4):    # se un peg è stato rimosso dalla giocata, viene tolto da secret_code[]
+                    if draggable == "dropped_peg_" + str(dropped) and droppable == "empty_bg":
+                        secret_code[dropped] = 0
+                        renpy.play("audio/drag_out.ogg")
+                    for hole in range (1,5):    # un peg può essere spostato da un buco ad un altro
+                        if draggable == "dropped_peg_" + str(dropped) and droppable == "hole_" + str(hole):
+                            if hole-1 != dropped:       # se il peg non è rilasciato nel suo buco iniziale
+                                secret_code[hole-1] = secret_code[dropped]
+                                secret_code[dropped] = 0
+                            renpy.play("audio/peg.mp3")
                 for i in range(1,5):        #aggiorna la board con la giocata che si sta inserendo
                     board[11][i] = secret_code[i-1]
                 if persistent.choice == "cancel":         #è stato cliccato "cancel" dal main menu
                         yes_no = ''
                         renpy.call_screen ("are_you_sure", "Do you want to quit this game? ")
+                        #narrator (yes_no)
                         if yes_no == "yes":
                             key_board = []
                             board = []
@@ -306,6 +301,8 @@ init 1 python:
                 renpy.show_screen("board_update")
                 for i in range(0,4):
                         key_board[row][i] = key_code[i]
+                #renpy.show_screen ("mm_key_board_big", row)
+                #narrator(code_played_fake)
                 if next_key == 'XXXX':
                     secret_code_str = str(secret_code[0]) + str(secret_code[1]) + str(secret_code[2]) + str(secret_code[3]) 
                     #narrator (secret_code_str)
@@ -352,12 +349,19 @@ init 1 python:
                         renpy.call_screen ("are_you_sure", "Do you want to quit this game?")
                         #narrator (yes_no)
                         if yes_no == "yes":
+                            # key_board = []
+                            # board = []
+                            # reset_board()
+                            #if secret != "Enter":
+                                #renpy.hide_screen("open_shield")
                             renpy.show_screen("board_update")
                             renpy.show_screen("game_over", "GAME CANCELLED")
                             persistent.choice = "none"
                             return
                         else:
                             persistent.choice = "game2"
+                    # if persistent.choice == "quit":
+                    #     renpy.quit()
             if blacks == 4:
                 secret_code =''
                 for i in next_code:                                   #generazione del codice fake basato sul codice vero
@@ -378,7 +382,6 @@ init 1 python:
                 return            
 
     def game3(colors):
-        # parte copiata da GAME2 - inserimento codice segreto
         """ partita dove il programma deve indovinare il codice segreto scelto dal giocatore usando le partite già giocate """
         global clicked          #usata anche da input_game1
         global secret_code
@@ -386,58 +389,54 @@ init 1 python:
         global droppable
         global key_board
         global board
+        #global colors
         global yes_no
         global secret
         global secret_code
-        global thread
-        global best_code_ready
-        global copilot_on
-        global copilot
-        global start_time
-        global inserting_code
-        global inserting_key_code
-        best_code_ready = False
-        copilot_on = False
+        global clicked
         mm = Mastermind_Engine()
         persistent.status = "on_game"
-        persistent.shield_status = "close"
         key_board = []
         board = []
         reset_board()                                  
         next_key = ''
         secret = ''
-        secret_code = [6,6,6,0]
+        secret_code = [0,0,0,0]
+        #colors = 0
         clicked = 99
         renpy.hide_screen ("final_update")          # rimuove lo shield aperto della partita precedente
         renpy.hide_screen ("open_shield")
         renpy.hide_screen("board_update") 
-        renpy.call_screen ("secret_code_game", "In GAME-3 two players will play on the same device.\n\n The first player can enter the secret code or keep it in mind")
+        #narrator ("prima di enter")
+        #renpy.call_screen ("confirm_game4", "Which version of the game do you want to play?")
+        renpy.call_screen ("secret_code_game4", "In GAME-3 two players will play on the same device.\n\n The first player can enter the secret code or keep it in mind")
         if secret == "Enter":
+            #narrator ("inizio ciclo")
             renpy.show_screen("open_shield")
             while not clicked == 10:       
                 draggable = False
                 droppable = False
                 renpy.show_screen("board_update")
-                renpy.call_screen ("enter_secret_code_game", colors, secret_code)
-                secret_code = dragged_secret_code(secret_code, draggable, droppable)
-
-                # for peg in range (1, colors+1):     # se è stato droppato un peg della colonna esterna, viene aggiornato code[]
-                #     for hole in range (1,5):        
-                #         if draggable == "peg_" + str(peg) and droppable == "hole_" + str(hole):
-                #             secret_code[hole-1] = peg
-                #             renpy.play("audio/peg.mp3")
-                # for dropped in range (0,4):    # se un peg è stato rimosso dalla giocata, viene tolto da secret_code[]
-                #     if draggable == "dropped_peg_" + str(dropped) and droppable == "empty_bg":
-                #         secret_code[dropped] = 0
-                #         renpy.play("audio/drag_out.ogg")
-                #     for hole in range (1,5):    # un peg può essere spostato da un buco ad un altro
-                #         if draggable == "dropped_peg_" + str(dropped) and droppable == "hole_" + str(hole):
-                #             if hole-1 != dropped:       # se il peg non è rilasciato nel suo buco iniziale
-                #                 secret_code[hole-1] = secret_code[dropped]
-                #                 secret_code[dropped] = 0
-                #             renpy.play("audio/peg.mp3")
+                renpy.call_screen ("enter_secret_code_game4", colors, secret_code)
+                for peg in range (1, colors+1):     # se è stato droppato un peg della colonna esterna, viene aggiornato code[]
+                    for hole in range (1,5):        
+                        if draggable == "peg_" + str(peg) and droppable == "hole_" + str(hole):
+                            secret_code[hole-1] = peg
+                            renpy.play("audio/peg.mp3")
+                for dropped in range (0,4):    # se un peg è stato rimosso dalla giocata, viene tolto da secret_code[]
+                    if draggable == "dropped_peg_" + str(dropped) and droppable == "empty_bg":
+                        secret_code[dropped] = 0
+                        renpy.play("audio/drag_out.ogg")
+                    for hole in range (1,5):    # un peg può essere spostato da un buco ad un altro
+                        if draggable == "dropped_peg_" + str(dropped) and droppable == "hole_" + str(hole):
+                            if hole-1 != dropped:       # se il peg non è rilasciato nel suo buco iniziale
+                                secret_code[hole-1] = secret_code[dropped]
+                                secret_code[dropped] = 0
+                            renpy.play("audio/peg.mp3")
                 for i in range(1,5):        #aggiorna la board con la giocata che si sta inserendo
                     board[11][i] = secret_code[i-1]
+                #narrator (board[11])
+                #renpy.show_screen("board_update")
                 if persistent.choice == "cancel":         #è stato cliccato "cancel" dal main menu
                         yes_no = ''
                         renpy.call_screen ("are_you_sure", "Do you want to quit this game? ")
@@ -454,155 +453,123 @@ init 1 python:
                             return
                         else:
                             persistent.choice = "game3"
-        secret_code = mm.code_adapter(secret_code)    
-        key_board = []
-        board = []
-        copilot = [True] * (colors+1) 
-        reset_board()
-        blacks = 0          # serve per evitare errori nel richiamo di final 
-        #start_time = time.time()
-        renpy.hide_screen ("final_update")          # rimuove lo shield aperto della partita precedente
-        renpy.hide_screen("open_shield")
-        #secret_code = code_adapter (generate_secret_code(colors))
-        
-        if persistent.status == "final":              # si passa da una partita finita a una che inizia
-            renpy.hide_screen("board_update")
-            renpy.play("audio/close.mp3")
-            persistent.status = "on_game"
-        
-        renpy.show_screen("board_update")
-        for row in range (1, 11):  #le giocate massime sono 10 
-            code = [1,1,1,1] #giocata corrente vuota
+                # if persistent.choice == "quit":
+                #     renpy.quit()
+
+                #pippo
+
+        fake_pegs_dict = {6:['1', '2', '3', '4', '5', '6'], 8:['1', '2', '3', '4', '5', '6', '7', '8']}  #serve per simulare un codice random sia per la versione a 6 e a 8 colori                 
+        fake_pegs = fake_pegs_dict[colors]                          #considera la fake pegs in base al numero di colori con cui si sta giocando
+        random.shuffle(fake_pegs)                                   #mischia i pegs nella lista
+        first_codes_list = ['2131', '1231', '2311', '2113', '1123', '1212', '1221', '1122', '1234', '1234', '1234']     #1234 è ripetuto per aumentare le probabilità
+        is_first_play = True 
+        first_code = random.choice(first_codes_list)                #per il primo tentativo il codice viene scelto nella lista first_codes_list
+        #first_code = first_codes_list[0]                           # per troubleshooting
+        #narrator (first_code)
+        matrix = mm.make_matrix_from_file_renpy (colors, first_code)      #crea la matrice delle partite giocate dal file in base al numero di colori usati e al primo codice giocato 
+        for row in range(1,11):                                    #loop per tutte le partite possibili
             key_code = [0,0,0,0] 
+            if is_first_play:
+                code_played = first_code
+                next_code = first_code                              # necessario se l'app indovina al pomo tentativo
+                is_first_play = False                               #dalla seconda giocata il codice sarà: next_code
+            else:
+                code_played = next_code
+            code_played_fake = ''                                   #è il codice che viene visualizzao invece di quello vero. Fa sembrare che il programma gioca sempre codici diversi          
+            for i in code_played:                                   #generazione del codice fake basato sul codice vero
+                code_played_fake += fake_pegs[int(i) - 1]
+            #code_played_fake = code_played                      # per troubleshooting reinserire la funzione fake
+            for i in range(1,5):        #aggiorna la board con la giocata che si sta inserendo
+                board[row][i] = int(code_played_fake[i-1])
             inserting_code = True
-            clicked = 99
-            persistent.shield_status = "close"
-            renpy.hide_screen ("final_update") 
-
-            while inserting_code:
-                draggable = False
-                droppable = False
-                renpy.show_screen ("board_update")
-                renpy.call_screen ("input_game1", row, colors, code)
-                code = dragged_code(row, code, draggable, droppable)
-
-                # for peg in range (1, colors+1):     # se è stato droppato un peg della colonna esterna, viene aggiornato code[]
-                #     for hole in range (1,5):        
-                #         if draggable == "peg_" + str(peg) and droppable == "hole_" + str(hole):
-                #             code[hole-1] = peg
-                #             renpy.play("audio/peg.mp3")
-                # for dropped in range (0,4):    # se un peg è stato rimosso dalla giocata, viene tolto da code[]
-                #     if draggable == "dropped_peg_" + str(dropped) and droppable == "empty_bg":
-                #         code[dropped] = 0
-                #         renpy.play("audio/drag_out.ogg")
-                #     for hole in range (1,5):    # un peg può essere spostato da un buco ad un altro
-                #         if draggable == "dropped_peg_" + str(dropped) and droppable == "hole_" + str(hole):
-                #             if hole-1 != dropped:       # se il peg non è rilasciato nel suo buco iniziale
-                #                 code[hole-1] = code[dropped]
-                #                 code[dropped] = 0
-                #             renpy.play("audio/peg.mp3")
-                #     for i in range (1,row+1):       # drag dei peg dalle righe precedenta a quella attuale 
-                #         for j in range (1, 5):      
-                #             for hole in range (1,5):
-                #                 if draggable == "dropped_peg_prec" + str(i-1) + str(j-1) and droppable == "hole_" + str(hole):
-                #                     code[hole-1] = board[i-1][j]
-                #                     renpy.play("audio/peg.mp3")
-                
-                for i in range(1,5):        #aggiorna la board con la giocata che si sta inserendo
-                    board[row][i] = code[i-1]
-                #copilot = [True] * (colors+1) 
-                # if (code[0] != 0 or code[1] != 0 or code[2] != 0 or code[3] != 0) and copilot_on:
-                #     copilot = mm_copilot(code, db_lc, colors)
-                if (clicked == 10) and (code[0] != 0) and (code[1] != 0) and (code[2] != 0) and (code[3] != 0): #ok spunta verde e controllo che ci siano tutti i 4 colori
-                    inserting_code = False
-                    code_played = mm.code_adapter (str(code[0])+str(code[1])+str(code[2])+str(code[3]))
-                    #copilot = [True] * (colors+1)
-                if persistent.status == "final":     #valore impostato dalla funzione di Input. Click sullo shield
-                    yes_no = ''
-                    renpy.call_screen ("are_you_sure", "Are you sure you want to give up?")
-                    if yes_no == "yes":
-                        mm_final(blacks, row)
-                        renpy.show_screen ("final_update")
-                        renpy.show_screen("game_over", "YOU GAVE UP" )
-                        return
-                    else:
-                        persistent.choice = "game3"
-                        persistent.status = "on_game"
-                if persistent.choice == "cancel":         #è stato cliccato "cancel" dal main menu
-                    yes_no = ''
-                    renpy.call_screen ("are_you_sure", "Do you want to quit this game?")
-                    if yes_no == "yes":   
-                        renpy.show_screen("board_update")
-                        renpy.show_screen("game_over", "GAME CANCELLED")
-                        persistent.choice = "none"
-                        return
-                    else:
-                        persistent.choice = "game3"
-
-            #aggiungere nelle preferenze l'abilitazioni/disabilitazione di "INFO"
-            #copilot non visualizzato se persistent.choice = "game3"
-            # parte copiata da GAME 2 - inserimento key code
-            inserting_key_code = True
             renpy.play("audio/peg.mp3")
-            while inserting_key_code:
+            while inserting_code:
                 clicked = 99
                 draggable = False
                 droppable = False
+                #game_board.append([code_played_fake, 0, 0])             #aggiunta del codice fake
+                #narrator (str(board[11]))
                 renpy.show_screen("board_update")
                 for i in range(0,4):
                         key_board[row][i] = key_code[i]
-                
-                renpy.show_screen ("mm_key_board")
-                renpy.call_screen ("input_game4", row, key_code)
-                for key_peg in range (1, 3):     # se è stato droppato un peg della colonna esterna, viene aggiornato code[]
-                    for hole in range (1,5):        
-                        if draggable == "key_peg_" + str(key_peg) and droppable == "hole_" + str(hole):
-                            key_code[hole-1] = key_peg      #nelle 4 posizioni del key_code ci va 1 per il bianco e 2 per il nero
-                            renpy.play("audio/peg.mp3")
-                for dropped in range (0,4):    # se un key peg è stato rimosso dalla giocata, viene tolto da key_code[]
-                    if draggable == "dropped_key_peg_" + str(dropped) and droppable == "empty_bg":
-                        key_code[dropped] = 0
-                        renpy.play("audio/drag_out.ogg")
-                if (clicked == 10) : #ok spunta verde 
-                    inserting_key_code = False
-                    #code_played = mm.code_adapter (str(code[0])+str(code[1])+str(code[2])+str(code[3]))
-                    whites = 0
-                    blacks = 0
-                    for i in range (0,4):
-                        if key_code[i] == 1:
-                            whites += 1
-                        if key_code[i] == 2:
-                            blacks += 1
-                    
-                if persistent.choice == "cancel":         #è stato cliccato "cancel" dal main menu
-                    yes_no = ''
-                    renpy.call_screen ("are_you_sure", "Do you want to quit this game?")
-                    #narrator ("yes_no")
-                    if yes_no == "yes":
-                        renpy.show_screen("board_update")
-                        renpy.show_screen("game_over", "GAME CANCELLED")
+                #renpy.show_screen ("mm_key_board_big", row)
+                #narrator(code_played_fake)
+                if next_key == 'XXXX':
+                    secret_code_str = str(secret_code[0]) + str(secret_code[1]) + str(secret_code[2]) + str(secret_code[3]) 
+                    #narrator (secret_code_str)
+                    #narrator (code_played_fake)
+                    if secret == "Enter" and secret_code_str != code_played_fake:
                         persistent.choice = "none"
+                        renpy.call_screen("wrong_key_game4", "One or more KEY CODES entered are incorrect.")
+                        renpy.show_screen("game_over", "GAME OVER")
                         return
-                    else:
-                        persistent.choice = "game3"
-                if persistent.shield_status == "open":
-                    #mm_final(blacks, row)
-                    #narrator ("shield aperto")
-                    renpy.show_screen ("final_update")    
-                #fine input keycode game2
-
+                    else:                   
+                        blacks = 4
+                        whites = 0
+                        for i in range(0,4):
+                            key_board[row][i] = 2       #mette 4 key code neri
+                        inserting_code = False
+                        #renpy.hide_screen ("mm_key_board_big")
+                else:
+                    for i in range(0,4):
+                        key_board[row][i] = key_code[i]
+                    renpy.show_screen ("mm_key_board")
+                    #renpy.show_screen ("mm_key_board_big", row)
+                    renpy.call_screen ("input_game4", row, key_code)
+                    for key_peg in range (1, 3):     # se è stato droppato un peg della colonna esterna, viene aggiornato code[]
+                        for hole in range (1,5):        
+                            if draggable == "key_peg_" + str(key_peg) and droppable == "hole_" + str(hole):
+                                key_code[hole-1] = key_peg      #nelle 4 posizioni del key_code ci va 1 per il bianco e 2 per il nero
+                                renpy.play("audio/peg.mp3")
+                    for dropped in range (0,4):    # se un key peg è stato rimosso dalla giocata, viene tolto da key_code[]
+                        if draggable == "dropped_key_peg_" + str(dropped) and droppable == "empty_bg":
+                            key_code[dropped] = 0
+                            renpy.play("audio/drag_out.ogg")
+                    if (clicked == 10) : #ok spunta verde 
+                        inserting_code = False
+                        #code_played = mm.code_adapter (str(code[0])+str(code[1])+str(code[2])+str(code[3]))
+                        whites = 0
+                        blacks = 0
+                        for i in range (0,4):
+                            if key_code[i] == 1:
+                                whites += 1
+                            if key_code[i] == 2:
+                                blacks += 1
+                    if persistent.choice == "cancel":         #è stato cliccato "cancel" dal main menu
+                        yes_no = ''
+                        renpy.call_screen ("are_you_sure", "Do you want to quit this game?")
+                        #narrator (yes_no)
+                        if yes_no == "yes":
+                            # key_board = []
+                            # board = []
+                            # reset_board()
+                            #if secret != "Enter":
+                                #renpy.hide_screen("open_shield")
+                            renpy.show_screen("board_update")
+                            renpy.show_screen("game_over", "GAME CANCELLED")
+                            persistent.choice = "none"
+                            return
+                        else:
+                            persistent.choice = "game3"
             if blacks == 4:
-                # mm_final(blacks, row)
+                secret_code =''
+                for i in next_code:                                   #generazione del codice fake basato sul codice vero
+                    secret_code += fake_pegs[int(i) - 1]
+                secret_code = mm.code_adapter(secret_code)  
+                mm_final(blacks, row)
                 renpy.show_screen ("final_update")
-                #renpy.show_screen ("final_update")
-                renpy.show_screen("game_over", "YOU WON!")
+                renpy.show_screen("game_over", "SECRET CODE GUESSED")
+                break
+            code_plus_key = code_played + ' ' + 'X' * blacks + 'O' * whites + '_' * (4 - (blacks + whites)) 
+            #compone il codice giocato + il codice chiave inserito dal giocatore per cercare il prossimo codice da gocare
+            matrix, next_code, next_key = mm.find_next_code (row, matrix, code_plus_key )                  
+            #trova il prossimo codice da giocare. next_key serve solo se è uguale a XXXX
+            if next_code == 'not_found':
                 persistent.choice = "none"
-                break 
-        if blacks != 4: #è stato superato il numero massimo di giocate senza indovinare il codice segreto
-            mm_final(blacks, row)
-            renpy.show_screen ("final_update")
-            renpy.show_screen("game_over", "GAME OVER")
-        return
+                renpy.call_screen("wrong_key_game4", "One or more KEY CODES entered are incorrect.")
+                renpy.show_screen("game_over", "GAME OVER")
+                return            
+
 
     def mm_final (blacks, row):            # prepara il finale del gioco e chiama board_update
         renpy.play("audio/open.mp3")
@@ -617,6 +584,10 @@ init 1 python:
                 time_conv = time_converter (integer_seconds)
                 temp = [row, '']
                 temp[1] = time_conv
+                # temp = [row,0,0,0]
+                # for i in range (1,4):
+                #     temp[i] = time_conv[i-1]
+                #narrator(temp)
                 persistent.perf.append(temp)
                 persistent.total_time += integer_seconds
                 persistent.total_time_converted = time_converter (persistent.total_time)
@@ -635,7 +606,7 @@ init 1 python:
         store.droppable = drop.drag_name
         return True
 
-    def reset_board():      # azzera tutta la board compresi i keycode. Indice 11 è la posizione del secret code
+    def reset_board(): 
         for row in range (12):
             single_row = [0,0,0,0,0]
             single_row_key = [0,0,0,0]
@@ -687,51 +658,7 @@ init 1 python:
                 #return [integer_hours, remaining_minutes, remaining_seconds ]
                 return formatted_time       
 
-    def dragged_code(row, code, draggable, droppable):
-        for peg in range (1, colors+1):     # se è stato droppato un peg della colonna esterna, viene aggiornato code[]
-            for hole in range (1,5):        
-                if draggable == "peg_" + str(peg) and droppable == "hole_" + str(hole):
-                    code[hole-1] = peg
-                    renpy.play("audio/peg.mp3")
-        for dropped in range (0,4):    # se un peg è stato rimosso dalla giocata, viene tolto da code[]
-            if draggable == "dropped_peg_" + str(dropped) and droppable == "empty_bg":
-                code[dropped] = 0
-                renpy.play("audio/drag_out.ogg")
-            for hole in range (1,5):    # un peg può essere spostato da un buco ad un altro
-                if draggable == "dropped_peg_" + str(dropped) and droppable == "hole_" + str(hole):
-                    if hole-1 != dropped:       # se il peg non è rilasciato nel suo buco iniziale
-                        code[hole-1] = code[dropped]
-                        code[dropped] = 0
-                    renpy.play("audio/peg.mp3")
-            for i in range (1,row+1):       # drag dei peg dalle righe precedenta a quella attuale 
-                for j in range (1, 5):      
-                    for hole in range (1,5):
-                        if draggable == "dropped_peg_prec" + str(i-1) + str(j-1) and droppable == "hole_" + str(hole):
-                            code[hole-1] = board[i-1][j]
-                            renpy.play("audio/peg.mp3")
-        return code
-    
-    def dragged_secret_code(secret_code, draggable, droppable):
-        for peg in range (1, colors+1):     # se è stato droppato un peg della colonna esterna, viene aggiornato code[]
-            for hole in range (1,5):        
-                if draggable == "peg_" + str(peg) and droppable == "hole_" + str(hole):
-                    secret_code[hole-1] = peg
-                    renpy.play("audio/peg.mp3")
-        for dropped in range (0,4):    # se un peg è stato rimosso dalla giocata, viene tolto da secret_code[]
-            if draggable == "dropped_peg_" + str(dropped) and droppable == "empty_bg":
-                secret_code[dropped] = 0
-                renpy.play("audio/drag_out.ogg")
-            for hole in range (1,5):    # un peg può essere spostato da un buco ad un altro
-                if draggable == "dropped_peg_" + str(dropped) and droppable == "hole_" + str(hole):
-                    if hole-1 != dropped:       # se il peg non è rilasciato nel suo buco iniziale
-                        secret_code[hole-1] = secret_code[dropped]
-                        secret_code[dropped] = 0
-                    renpy.play("audio/peg.mp3")
-        return secret_code
-
-
-
-screen board_update():      # aggiorna i pegs sulla board compresi i pegs del codice segreto (posizione 11)
+screen board_update():      # aggiorna i pegs sulla board e se chiamato da mm_final visualizza il codice segreto
     fixed:
         xsize 1080
         ysize 1920
@@ -758,11 +685,11 @@ screen final_update():      # aggiorna i pegs sulla board e se chiamato da mm_fi
                 xpos peg_pos[11][j][1]
                 ypos peg_pos[11][j][2]
 
-screen score_update():      # aggiorna lo score sulla board
+screen score_update():      # aggiorna i pegs sulla board e se chiamato da mm_final visualizza il codice segreto
     fixed:
         xsize 1080
         ysize 1920
-        for i in range (1,30):              
+        for i in range (1,30):              #aggiorna la board con le giocate
             for j in range (1,3):
                 add key_pegs[persistent.score[i][j]]:
                     xalign 0.5
@@ -804,7 +731,7 @@ screen mm_menu():   # è il menu contestualizzato al richiamo delle modalità di
                     idle "x"
                     hover "x"
                     action Hide("mm_menu"), Return()
-            if persistent.choice == "none":                 # none = nessuna partita è attiva     
+            if persistent.choice == "none":        
                 textbutton "• PLAY GAME 1":
                     action Hide("mm_menu"), SetVariable("persistent.choice", "game1"), Return()
                 textbutton "• PLAY GAME 2":
@@ -816,14 +743,15 @@ screen mm_menu():   # è il menu contestualizzato al richiamo delle modalità di
                 textbutton "• PREFERENCES":
                     action Hide("mm_menu"), Show("preferences"), Return()        
             if persistent.choice == "game1" or persistent.choice == "game2" or persistent.choice == "game3":
-                textbutton "• CANCEL":          # voce menu CANCEL solo durante le partite
+                textbutton "• CANCEL":
                     action Hide("mm_menu"), SetVariable("persistent.choice", "cancel"), Return()
             textbutton "• HELP AND TIPS":
                 action Hide("mm_menu"), Show("tips"), Return()
             textbutton "• CLOSE THE APP":
                 action Quit(confirm=None)
 
-screen input_game1(row, colors, code):     # input delle giocate + checkmark verde + bottone shield per rinuncia, info, best code e copilot
+
+screen input_game1(row, colors, code):     # input delle giocate + checkmark verde + bottone di rinuncia
     fixed:
         xsize 1080
         ysize 1920
@@ -868,7 +796,7 @@ screen input_game1(row, colors, code):     # input delle giocate + checkmark ver
                         dragged drag_placed
                         drag_raise False
                         mouse_drop True
-            if row > 1:                 # per il drag dei peg dalle righe precedenti all'attuale
+            if row > 1:                 # per il drag dei peg della riga precedente all'attuale
                 for i in range (1,row+1):
                     for j in range (1, 5):      
                         $ name = "dropped_peg_prec"+ str(i-1)+ str(j-1)
@@ -903,50 +831,49 @@ screen input_game1(row, colors, code):     # input delle giocate + checkmark ver
             zoom 0.4 
 
     imagebutton:
+        ypos peg_pos[row][1][2] - 47
+        xpos 167
+        idle "info"
+        hover "info" 
+        action SetVariable("clicked", 11), Return()
+
+    imagebutton:
         xpos 250
         ypos 250
         idle "shield_btn"
         hover "shield_btn" 
         action SetVariable("persistent.status", "final"), Return()
+    
+    imagebutton:
+        ypos 250
+        xpos 920
+        if copilot_on:
+            idle "copilot_on"
+            hover Transform("copilot_on", size=(160, 160), fit="contain")
+            #hover "copilot_on"
+            action SetVariable("copilot_on", False), Return()
+        else:
+            idle "copilot_off"
+            hover Transform("copilot_off", size=(160, 160), fit="contain")
+            #hover "copilot_off"
+            action SetVariable("copilot_on", True), Return()
 
-    if persistent.choice == "game1":        # solo in game1 c'è info, best code e copilot. In game 3 no
-        imagebutton:
-            ypos peg_pos[row][1][2] - 47
-            xpos 167
-            idle "info"
-            hover "info" 
-            action SetVariable("clicked", 11), Return()
-        
+    if persistent.best_code_active:
         imagebutton:
             ypos 250
-            xpos 920
-            if copilot_on:
-                idle "copilot_on"
-                hover Transform("copilot_on", size=(160, 160), fit="contain")
-                #hover "copilot_on"
-                action SetVariable("copilot_on", False), Return()
+            xpos 5
+            if not thread.is_alive():       #i best code sono stati generati
+                idle "best_code_ready"
+                hover Transform("best_code_ready", size=(170, 170), fit="contain")
+                #hover "best_code_ready"
+                action SetVariable("persistent.status", "best_code"), SetVariable("best_code_ready", True), Return()
             else:
-                idle "copilot_off"
-                hover Transform("copilot_off", size=(160, 160), fit="contain")
-                #hover "copilot_off"
-                action SetVariable("copilot_on", True), Return()
-
-        if persistent.best_code_active:
-            imagebutton:
-                ypos 250
-                xpos 5
-                if not thread.is_alive():       #i best code sono stati generati
-                    idle "best_code_ready"
-                    hover Transform("best_code_ready", size=(170, 170), fit="contain")
-                    #hover "best_code_ready"
-                    action SetVariable("persistent.status", "best_code"), SetVariable("best_code_ready", True), Return()
-                else:
-                    idle "best_code_processing"
-                    hover Transform("best_code_processing2", size=(170, 170), fit="contain")
-                    #hover "best_code_processing"
-                    action Return()
+                idle "best_code_processing"
+                hover Transform("best_code_processing2", size=(170, 170), fit="contain")
+                #hover "best_code_processing"
+                action Return()
         
-screen input_game4(row, key_code):     # input dei key code + checkmark verde + bottone di rinuncia
+screen input_game4(row, key_code):     # input delle giocate + checkmark verde + bottone di rinuncia
     fixed:
         xsize 1080
         ysize 1920
@@ -976,7 +903,7 @@ screen input_game4(row, key_code):     # input dei key code + checkmark verde + 
                         draggable False
                         droppable True
                         mouse_drop True  
-            for j in range (1, 5):      # per la rimozione dei key pegs already dropped per la riga in progress
+            for j in range (1, 5):      # per la rimozionea dei key pegs already dropped per la riga in progress
                 $ name = "dropped_key_peg_"+ str(j-1)
                 if key_code[j-1] > 0:
                     drag:
@@ -1003,14 +930,7 @@ screen input_game4(row, key_code):     # input dei key code + checkmark verde + 
         idle "checkmark"
         hover "checkmark" 
         action SetVariable("clicked", 10), Return()
-    if persistent.choice == "game3":        # in game3 il clic allo shield lo fa aprire per vedere il codice segreto
-        imagebutton:
-            xpos 250
-            ypos 250
-            idle "shield_btn"
-            hover "shield_btn" 
-            action SetVariable("persistent.shield_status", "open"), Return()
-            
+    
 screen mm_print_mastermind():   #visualizza la scritta MASTER MIND
     fixed:
         xpos -20
@@ -1023,7 +943,8 @@ screen mm_print_mastermind():   #visualizza la scritta MASTER MIND
                 color "#ffffff"
                 font "fonts/joystix monospace.otf"
 
-screen secret_code_game(message):   #chiede se vuoi inserire il codice segreto o tenere in mente. Game2 e game3
+screen secret_code_game4(message):
+    ## Ensure other screens do not get input while this screen is displayed.
     modal True
     zorder 200
     style_prefix "confirm"
@@ -1057,6 +978,7 @@ screen secret_code_game(message):   #chiede se vuoi inserire il codice segreto o
     #key "game_menu" action no_action
 
 screen wrong_key_game4(message):
+    ## Ensure other screens do not get input while this screen is displayed.
     modal True
     zorder 200
     style_prefix "confirm"
@@ -1139,7 +1061,7 @@ screen tips():
                         #text_size 50
                         text_color "#000000"
 
-screen score():     # visualizza il popup del punteggio
+screen score():
     ## Ensure other screens do not get input while this screen is displayed.
     modal True
     zorder 200
@@ -1194,7 +1116,7 @@ screen score():     # visualizza il popup del punteggio
                     text_align 0.5
                     action Function(reset_score), Return()      
 
-screen attempt_info(chance, tot_lc, left_code, left_code_bs, code_status, bs_inconsistent): # ifo visulaizzate cliccand la "i" di Info
+screen attempt_info(chance, tot_lc, left_code, left_code_bs, code_status, bs_inconsistent):
     ## Ensure other screens do not get input while this screen is displayed.
     modal True
     zorder 200
@@ -1334,7 +1256,7 @@ screen welcome_message():
                     #text_bold True
                     action SetVariable("persistent.welcome", False), Hide("welcome_message"), Return()
 
-screen enter_secret_code_game(colors, secret_code):     # input del codice segreto per game2 e game3
+screen enter_secret_code_game4(colors, secret_code):     # input del codice segreto per Game4
     fixed:
         xsize 1080
         ysize 1920
@@ -1448,6 +1370,13 @@ screen preferences():
             textbutton "• Best Code feature":
                     action  Show ("best_code_feature"), Return()
 
+            # if persistent.best_code_active:
+            #     textbutton "• Disable Best Code":
+            #         action Hide("mm_menu"), SetVariable("persistent.best_code_active", False), Show("disable_best_code"), Return()
+            # if not persistent.best_code_active:
+            #     textbutton "• Enable Best Code":
+            #         action Hide("mm_menu"), SetVariable("persistent.best_code_active", True), Show("disable_best_code"), Return()
+          
 screen numbers_of_colors():
     ## Ensure other screens do not get input while this screen is displayed.
     modal True
