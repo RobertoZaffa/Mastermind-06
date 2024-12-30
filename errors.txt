@@ -2,8 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 683: invalid syntax
-    def dragged_code(code)
+File "game/script.rpy", line 549: invalid syntax
+        global copilot_on = False
+                           ^
 
 Ren'Py Version: Ren'Py 8.3.3.24091901+nightly
-Fri Nov 22 15:39:36 2024
+Mon Dec 23 22:09:48 2024

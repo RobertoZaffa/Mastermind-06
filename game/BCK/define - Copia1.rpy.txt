@@ -5,6 +5,7 @@ image board_with_shield_closed:
     xpos 530
     ypos 1900
 
+
 image shield_open:              # solo shield aperto
     "shield_open.png"   
     zoom 0.5
@@ -89,26 +90,22 @@ image copilot_on_tip:
 
 define peg_zoom = 0.15
 
-image 00_empty_circle:
-    "00_empty_circle.png"
-    zoom peg_zoom
-
 image 00_empty:
     "00_empty.png"
     zoom peg_zoom
-    
+
 image 01_blue:
     "01_blue.png"
     zoom peg_zoom
-    
+
 image 02_red:
     "02_red.png"
     zoom peg_zoom
-    
+
 image 03_yellow:
     "03_yellow.png"
     zoom peg_zoom
-   
+
 image 04_green:
     "04_green.png"
     zoom peg_zoom
@@ -131,7 +128,7 @@ image 08_brown:
 
 ######################
 
-define peg_zoom_big = 0.20
+define peg_zoom_big = 0.25
 
 image 00_empty_big:
     "00_empty.png"
@@ -152,7 +149,7 @@ image 03_yellow_big:
 image 04_green_big:
     "04_green.png"
     zoom peg_zoom_big
-    
+
 image 05_white_big:
     "05_white.png"
     zoom peg_zoom_big
@@ -192,14 +189,9 @@ image key_black:
     zoom 0.12
 
 image key_empty:
-    "03_key_empty.png"
-    #"03_key_empty_test.png"
+    #"03_key_empty.png"
+    "03_key_empty"
     zoom 0.12
-
-image key_empty_circle:
-    #"azzurro_1600"
-    "00_empty_circle_1600.png"
-    zoom 0.08
 
 #definizione delle liste dei pegs e dei key pegs
 define key_pegs = ["key_empty", "key_white", "key_black"]
@@ -210,7 +202,7 @@ define key_pegs_big = ["key_empty_big", "key_white_big", "key_black_big"]
 
 #valori per il posizionamento dei pegs
 define v2 = -146
-define pegs_vert = [0, 0+7, v2+3, v2*2, v2*3, v2*4, v2*5+5, v2*6, v2*7+8, v2*8+8, v2*9+9, v2*10-35] #distanza verticale tra le giocate di input. In teoria dovevano essere gli stessi valori della board. define 
+define pegs_vert = [0, 0, v2, v2*2, v2*3, v2*4, v2*5, v2*6, v2*7+5, v2*8+5, v2*9+9, v2*10-45] #distanza verticale tra le giocate di input. In teoria dovevano essere gli stessi valori della board. define 
 define s1 = 123
 define pegs_oriz =  [0, s1, s1, s1, s1-1, s1-2, s1-2, s1-2, s1-2, s1-2, s1-2, s1-2] #distanza orizzontale tra i pegs
 
@@ -221,8 +213,8 @@ define key_space =  [0, s2, s2, s2, s2, s2, s2, s2, s2, s2, s2] #distanza orizzo
 define v3 = -147 #distanza tra una giocata e l'altra
 define v4 = -60 #distnaza tra i key code verticate nell'ambito della stessa giocata
 define key_oriz = [0, 0, s2]
-define key_vert_sopra =  [0, v4, v3+v4, v3*2+v4-5, v3*3+v4-5, v3*4+v4-5, v3*5+2+v4-5, v3*6+4+v4, v3*7+5+v4, v3*8+5+v4, v3*9+13+v4, v3*10+8+v4] #distanza verticale tra le giocate di tutta la board 
-define key_vert_sotto =  [0, 0, v3, v3*2-5, v3*3-5, v3*4-5, v3*5+2-5, v3*6+4, v3*7+5, v3*8+5, v3*9+10, v3*10+5] #distanza verticale tra le giocate di tutta la board 
+define key_vert_sopra =  [0, v4, v3+v4, v3*2+v4, v3*3+v4, v3*4+v4, v3*5+2+v4, v3*6+4+v4, v3*7+5+v4, v3*8+5+v4, v3*9+8+v4, v3*10+8+v4] #distanza verticale tra le giocate di tutta la board 
+define key_vert_sotto =  [0, 0, v3, v3*2, v3*3, v3*4, v3*5+2, v3*6+4, v3*7+5, v3*8+5, v3*9+5, v3*10+5] #distanza verticale tra le giocate di tutta la board 
 
 #valori per il posizionamento dei score pegs
 define v5 = -49
@@ -242,14 +234,14 @@ init 0 python:
     for i in range (1,12):
         for j in range (1,5):
             peg_pos[i][j][1] =  227 + pegs_oriz[i]*j        # posizione orizontale
-            peg_pos[i][j][2] = 1807 + pegs_vert[i]          # posizione verticale
+            peg_pos[i][j][2] = 1810 + pegs_vert[i]          # posizione verticale
     key_pos = [[[0 for _ in range(n_depth+1)] for _ in range(n_columns+1)] for _ in range(n_rows)]    # Crea una lista tridimensionale per posizionamento key pegs
     for i in range (1,11):
         for j in range (1,5):
             if j == 1 or j ==3:                                     #se i key peg sono sulla sx
-                key_pos[i][j][1] =  191 + key_oriz[1]               # posizione orizontale
+                key_pos[i][j][1] =  189 + key_oriz[1]               # posizione orizontale
             if j == 2 or j ==4:                                     #se i key peg sono sulla dx
-                key_pos[i][j][1] =  191 + key_oriz[2]               # posizione orizontale
+                key_pos[i][j][1] =  189 + key_oriz[2]               # posizione orizontale
             if j == 1 or j ==2:                                     #key peg sopra  
                 key_pos[i][j][2] = 1845 + key_vert_sopra[i]         # posizione verticale
             if j == 3 or j ==4:                                     #key peg sopra  
@@ -257,9 +249,8 @@ init 0 python:
     score_pos = [[[0 for _ in range(n_depth+1)] for _ in range(n_columns-1)] for _ in range(n_rows+20)]    # Crea una lista tridimensionale per posizionamento key pegs
     for i in range (1,30):
         for j in range (1,3):
-            score_pos[i][j][1] =  726 + score_oriz[i]*j        # posizione orizontale
-            score_pos[i][j][2] = 1817 + score_vert[i]          # posizione verticale
-
+            score_pos[i][j][1] =  745 + score_oriz[i]*j        # posizione orizontale
+            score_pos[i][j][2] = 1840 + score_vert[i]          # posizione verticale
 
 init -1 python:
     import random
@@ -272,6 +263,7 @@ default persistent.score_all = [[0 for i in range(5)] for j in range(30)]
 default persistent.score_player = 0     # giocatore contro l'app (game1 e game2)
 default persistent.score_player1 = 0    # giocatore 1. E' il primo che gioca e il punteggio è segnato con pioli binachi (game3)
 default persistent.score_player2 = 0    # giocatore 2. E' il secondo che gioca e il punteggio è segnato con pioli binachi (game3)
+#default persistent.default_player = "player2" 
 default persistent.score_app = 0
 default persistent.show_score_update = "not_show"   # "game1-game2" "game3"
 default persistent.best_code_active = True
@@ -280,7 +272,4 @@ default persistent.total_time = 0
 default persistent.total_time_converted = [0,0,0]
 default persistent.welcome = True
 default persistent.sound = False
-default persistent.training_solved_6 = [0] * 2926
-default persistent.training_solved_8 = [0] * 2926
 default colors = 6
-define _confirm_quit = False

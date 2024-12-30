@@ -5,11 +5,11 @@ label start:
     $ quick_menu = False
     $ start_game()
 
-init 1 python:          # starat game + game loop
+init 1 python:
     config.rollback_enabled = False  
     def start_game():        #setup iniziale + loop per il richiamo delle partite
         renpy.show ("mm_bg")        #compare solo questa volta - sfondo del gioco
-        renpy.show_screen ("print_mastermind") #richiamato solo da qua - scritta MASTER MIND
+        renpy.show_screen ("mm_print_mastermind") #richiamato solo da qua - scritta MASTER MIND
         renpy.show ("board_with_shield_closed")     #solo qua 
         renpy.show_screen ("menu_button")    #screen richiamato solo da qua
         persistent.choice = "none"
@@ -19,9 +19,9 @@ init 1 python:          # starat game + game loop
             renpy.show_screen("welcome_message")
             renpy.pause()
             renpy.show_screen("tap_main_menu", "WELCOME", "Tap the menu button to start.")
-        persistent.show_score_update = "not_show"   # può essere: "game1-game2" o "game3" o "not_show"
-        renpy.show_screen("score_update")       #visualizza lo score basato sui pegs
-        while True:                             # game loop
+        renpy.show_screen("score_update")
+        persistent.show_score_update = "not_show"   # "game1-game2" "game3"    
+        while True:
             if persistent.choice == "game1":
                 game1(colors)
             if persistent.choice == "game2":
@@ -32,16 +32,14 @@ init 1 python:          # starat game + game loop
                 training(colors)
             if persistent.choice == "score":
                 score()
-                renpy.show_screen("menu")
+                renpy.show_screen("mm_menu")
             if persistent.choice == "settings":
                 settings()
-                renpy.show_screen("menu")
+                renpy.show_screen("mm_menu")
             if persistent.choice == "help_tips":
                 help_tips()
-                renpy.show_screen("menu")
+                renpy.show_screen("mm_menu")
             renpy.pause()
-
-init 1 python:          # all needed functions
 
     def game1(colors):   # game player > app
         # """ il giocatore deve indovinare il codice segreto scelto dal programma """   
@@ -60,8 +58,6 @@ init 1 python:          # all needed functions
         global code_played
         global db_lc
         global code
-        global yes_no
-        yes_no = ''
         best_code_ready = False
         copilot_on = False
         mm = Mastermind_Engine()                                          
@@ -73,20 +69,21 @@ init 1 python:          # all needed functions
         
         #secret_code = mm.code_adapter("1333")                               #utilizzo di CS fisso per debugging
         
-        for i in range(1,5): board[11][i] = int(secret_code[0][i-1])        # mette il codice segreto nella posizione 11 della board
-        thread = CustomThread(target=mm.nothing())                          # per fare in modo che il test: if not thread.is_alive():  in menu non dia errore con row = 1
+        for i in range(1,5): board[11][i] = int(secret_code[0][i-1])
+        thread = CustomThread(target=mm.nothing())          # per fare in modo che il test  if not thread.is_alive():  in mm_menu non dia errore con row = 1
         thread.start()
         thread.join()         
-        start_time = time.time()                                            # usato per lo score 
+        start_time = time.time()
         board_close_update()
         persistent.show_score_update = "game1-game2"   # "game1-game2" "game3" "not_show"
+        #renpy.show_screen("score_update")  
         renpy.play("audio/close.mp3")
         persistent.status = "on_game"
         for row in range (1, 11):  #le giocate massime sono 10 
             code = [0,0,0,0] #giocata corrente vuota
             # if row == 1:            # per troubleshooting
             #     code = [1,2,3,1]
-            copilot = [True] * (colors+1)       # True per ogni colore della color bar che verrà visualizzato da input_game1 
+            copilot = [True] * (colors+1)
             inserting_code = True
             clicked = 99
             while inserting_code:       #fase di input + test dei clic/drag&drop
@@ -158,6 +155,7 @@ init 1 python:          # all needed functions
                     for i in range(0,4): key_board[row][i] = keycode[i]
                     renpy.show_screen ("code_key_update")
                 if persistent.status == "give_up":     # E' stato cliccato lo shield per arrendersi
+                    yes_no = ''
                     renpy.call_screen ("are_you_sure", "Are you sure you want to give up?")
                     if yes_no == "yes":
                         board_open_update()
@@ -171,7 +169,8 @@ init 1 python:          # all needed functions
                         persistent.choice = "game1"
                         persistent.status = "on_game"
                 if persistent.choice == "cancel":         #è stato cliccato "cancel" dal menu
-                    renpy.call_screen ("are_you_sure", "Do you want to stop this game?")
+                    yes_no = ''
+                    renpy.call_screen ("are_you_sure", "Do you want to quit this game?")
                     if yes_no == "yes":
                         renpy.show_screen("tap_main_menu", "GAME OVER", "Tap the menu button to start a new game")
                         persistent.choice = "none"
@@ -200,7 +199,7 @@ init 1 python:          # all needed functions
 
     def game2(colors):   # app > player
         """ partita dove il programma deve indovinare il codice segreto scelto dal giocatore usando le partite già giocate """
-        global clicked          
+        global clicked          #usata anche da input_game1
         global secret_code
         global draggable
         global droppable
@@ -222,7 +221,6 @@ init 1 python:          # all needed functions
         reset_board()                                  
         next_key = ''
         option = ''
-        yes_no = ''
         secret_code = [0,0,0,0]
         clicked = 99
         board_close_update()
@@ -235,9 +233,11 @@ init 1 python:          # all needed functions
                 board_open_update()
                 renpy.call_screen ("input_secret_code", colors, secret_code)
                 secret_code = dragged_secret_code(secret_code, draggable, droppable)
-                for i in range(1,5): board[11][i] = secret_code[i-1]       #aggiorna la board in posizione 11 con il secret code                   
+                for i in range(1,5):        #aggiorna la board con la giocata che si sta inserendo
+                    board[11][i] = secret_code[i-1]
                 if persistent.choice == "cancel":         #è stato cliccato "cancel" dal main menu
-                        renpy.call_screen ("are_you_sure", "Do you want to stop this game? ")
+                        yes_no = ''
+                        renpy.call_screen ("are_you_sure", "Do you want to quit this game? ")
                         if yes_no == "yes":
                             renpy.show_screen("tap_main_menu", "GAME OVER", "Tap the menu button to start a new game")
                             persistent.choice = "none"
@@ -250,28 +250,37 @@ init 1 python:          # all needed functions
         if option == "exit":
             persistent.choice = "none"
             return
+
+        
         secret_code_adapted = mm.code_adapter(str(secret_code[0]) + str(secret_code[1]) + str(secret_code[2]) + str(secret_code[3]))
+
         fake_pegs_dict = {6:['1', '2', '3', '4', '5', '6'], 8:['1', '2', '3', '4', '5', '6', '7', '8']}  #serve per simulare un codice random sia per la versione a 6 e a 8 colori                 
         fake_pegs = fake_pegs_dict[colors]                          #considera la fake pegs in base al numero di colori con cui si sta giocando
         random.shuffle(fake_pegs)                                   #mischia i pegs nella lista
+        
         first_codes_list = ['2131', '1231', '2311', '2113', '1123', '1212', '1221', '1122', '1234']     
         is_first_play = True 
         first_code = random.choice(first_codes_list)                #per il primo tentativo il codice viene scelto nella lista first_codes_list
         #first_code = '1234'
-        matrix = mm.make_matrix_from_file_renpy (colors, first_code, "Game_")      #crea la matrice delle partite giocate dal file in base al numero di colori usati e al primo codice giocato   
+        matrix = mm.make_matrix_from_file_renpy (colors, first_code, "Game_")      #crea la matrice delle partite giocate dal file in base al numero di colori usati e al primo codice giocato 
+        
         for row in range(1,11):                                    #loop per tutte le partite possibili
             key_code = [0,0,0,0] 
             if is_first_play:
                 code_played = first_code
-                next_code = first_code                              # necessario se l'app indovina al primo tentativo
+                next_code = first_code                              # necessario se l'app indovina al pomo tentativo
                 is_first_play = False                               #dalla seconda giocata il codice sarà: next_code
             else:
                 code_played = next_code
+            
             code_played_fake = ''                                   #è il codice che viene visualizzao invece di quello vero. Fa sembrare che il programma gioca sempre codici diversi          
             for i in code_played:                                   #generazione del codice fake basato sul codice vero
                 code_played_fake += fake_pegs[int(i) - 1]
-            code_played_fake = code_played                                      # per troubleshooting reinserire la funzione fake
+            
+            code_played_fake = code_played                      # per troubleshooting reinserire la funzione fake
+            
             for i in range(1,5): board[row][i] = int(code_played_fake[i-1])       #aggiorna la board con la giocata che si sta inserendo
+            
             inserting_key_code = True
             renpy.play("audio/peg.mp3")
             while inserting_key_code:
@@ -286,6 +295,7 @@ init 1 python:          # all needed functions
                     for i in range(0,4): key_board[row][i] = 2       # mette 4 key code neri in key_board
                     inserting_key_code = False
                 else:
+                    #for i in range(0,4): key_board[row][i] = key_code[i]
                     renpy.show_screen ("code_key_update")
                     renpy.call_screen ("input_game2", row, key_code)
                     key_code = dragged_key_code(row, key_code, draggable, droppable)
@@ -298,6 +308,7 @@ init 1 python:          # all needed functions
                                 whites += 1
                             if key_code[i] == 2:
                                 blacks += 1
+
                     code_played_fake_adapted = mm.code_adapter(code_played_fake)
                     if option == "ENTER" and clicked == 10:
                         whites_processed, blacks_processed = mm.find_keycode(secret_code_adapted, code_played_fake_adapted)
@@ -305,8 +316,10 @@ init 1 python:          # all needed functions
                             renpy.call_screen("message_x", "KEY CODE", "The key code entered\nis incorrect.\n\nPlease correct it")
                             inserting_key_code = True
                             clicked = 99
+
                     if persistent.choice == "cancel":         #è stato cliccato "cancel" dal main menu
-                        renpy.call_screen ("are_you_sure", "Do you want to stop this game?")
+                        yes_no = ''
+                        renpy.call_screen ("are_you_sure", "Do you want to quit this game?")
                         if yes_no == "yes":
                             renpy.show_screen("tap_main_menu", "GAME OVER", "Tap the menu button to start a new game")
                             persistent.choice = "none"
@@ -359,8 +372,7 @@ init 1 python:          # all needed functions
         persistent.status = "on_game"
         key_board = []
         board = []
-        reset_board()
-        yes_no = ''                                  
+        reset_board()                                  
         option = ''
         secret_code = [0,0,0,0]
         clicked = 99
@@ -386,7 +398,8 @@ init 1 python:          # all needed functions
             secret_code = dragged_secret_code(secret_code, draggable, droppable) #aggiorna il codice segreto in base al risultato di draggable e droppable
             for i in range(1,5): board[11][i] = secret_code[i-1]       #aggiorna il secret code su board[]      
             if persistent.choice == "cancel":         #è stato cliccato "cancel" dal menu
-                    renpy.call_screen ("are_you_sure", "Do you want to stop this game?")
+                    yes_no = ''
+                    renpy.call_screen ("are_you_sure", "Do you want to quit this game? ")
                     if yes_no == "yes":
                         renpy.show_screen("tap_main_menu", "GAME OVER", "Tap the menu button to start a new game")
                         persistent.choice = "none"
@@ -418,6 +431,7 @@ init 1 python:          # all needed functions
                     whites, blacks = mm.find_keycode(secret_code, code_played)
                 if persistent.status == "give_up":     #valore impostato dalla funzione di Input. E' stato cliccato lo shield per arrendersi
                     renpy.hide_screen("message")
+                    yes_no = ''
                     renpy.call_screen ("are_you_sure", "Are you sure you want to give up?")
                     if yes_no == "yes":
                         board_open_update() 
@@ -431,9 +445,11 @@ init 1 python:          # all needed functions
                         persistent.choice = "game3"
                         persistent.status = "on_game"
                 if persistent.choice == "cancel":         #è stato cliccato "cancel" dal main menu
-                    renpy.call_screen ("are_you_sure", "Do you want to stop this game?")
+                    yes_no = ''
+                    renpy.call_screen ("are_you_sure", "Do you want to quit this game?")
                     if yes_no == "yes":
                         renpy.show_screen("tap_main_menu", "GAME OVER", "Tap the menu button to start a new game")   
+                        #renpy.show_screen("message", "GAME CANCELLED", "Tap the menu button to start a new game")
                         persistent.choice = "none"
                         return
                     else:
@@ -475,7 +491,8 @@ init 1 python:          # all needed functions
                         inserting_key_code = True
                         clicked = 99   
                 if persistent.choice == "cancel":         #è stato cliccato "cancel" dal main menu
-                    renpy.call_screen ("are_you_sure", "Do you want to stop this game?")
+                    yes_no = ''
+                    renpy.call_screen ("are_you_sure", "Do you want to quit this game?")
                     if yes_no == "yes":
                         renpy.show_screen("tap_main_menu", "Tap the menu button to start a new game")
                         persistent.choice = "none"
@@ -501,9 +518,9 @@ init 1 python:          # all needed functions
             persistent.choice = "none"
         return
 
-    def training(colors):  
+    def training(colors):   # app > player
         """ partita dove il programma deve indovinare il codice segreto scelto dal giocatore usando le partite già giocate """
-        global clicked      
+        global clicked          #usata anche da input_game1
         global secret_code
         global draggable
         global droppable
@@ -534,7 +551,6 @@ init 1 python:          # all needed functions
         reset_board()                                  
         next_key = ''
         option = ''
-        yes_no = ''
         #secret_code = [0,0,0,0]
         clicked = 99
         board_close_update()
@@ -558,7 +574,8 @@ init 1 python:          # all needed functions
                     renpy.call_screen ("message_x", "TRAINING RESET", "All Training games have been reset")
             if option == "exit":
                 persistent.choice = "none"
-                return 
+                return
+        
         for x in range(len(matrix)):
             if colors == 6 and persistent.training_solved_6[x] == 1:    # se la partita è già stata giocata, passa alla prossima
                 continue
@@ -595,6 +612,7 @@ init 1 python:          # all needed functions
                             k -= 1
                 code_played = code_adapter(matrix_record[row][:4])
                 db_ac, db_lc = left_codes(db_ac, code_played, (whites, blacks))
+            
             row += 1    # row punta alla prossima riga da giocare.
             #code = [0,0,0,0]
             inserting_code = True
@@ -623,6 +641,7 @@ init 1 python:          # all needed functions
                             renpy.show_screen("tap_main_menu", "TRAINING OVER", "Tap the menu button to start a new game")
                             return
                 if persistent.choice == "cancel":         #è stato cliccato "cancel" dal menu
+                    yes_no = ''
                     renpy.call_screen ("are_you_sure", "Do you want to quit from this training session?")
                     if yes_no == "yes":
                         renpy.show_screen("tap_main_menu", "TRAINING OVER", "Tap the menu button to start a new game")   
@@ -633,6 +652,7 @@ init 1 python:          # all needed functions
                 if persistent.choice == "help_tips":         #è stato cliccato "help and tips" dal menu
                     help_tips()
                     persistent.choice = "training"
+                    
                 if blacks == 4:
                     board_open_update()
                     if colors == 6:
@@ -755,9 +775,10 @@ init 1 python:          # all needed functions
         return adapted_code
 
 
-    def board_close_update():   # nasconde il codeice segreto, chiude lo shield, e aggiorna la visualizzazione della board
+    def board_close_update():
         renpy.hide_screen ("secret_code")
         renpy.hide_screen ("open_shield")
+        #renpy.hide_screen ("board_update")
         renpy.show_screen ("board_update")
 
     def board_open_update():
@@ -767,6 +788,7 @@ init 1 python:          # all needed functions
         
     def score_update (row):            # Aggiorna lo score 
         renpy.play("audio/open.mp3")
+        #if (blacks == 4 or row == 10) and persistent.choice == "game1":
         if persistent.choice == "game1":
             if persistent.score_player + row < 30:
                 persistent.score_player = persistent.score_player + row
@@ -794,6 +816,13 @@ init 1 python:          # all needed functions
                     persistent.score_all [persistent.score_player2][4] = 2       # 2 è il key code nero
         return
 
+    def drag_placed(drags, drop):   #valorizza le variabili draggable e droppable in caso d drop
+        if not drop:
+            return
+        store.draggable = drags[0].drag_name
+        store.droppable = drop.drag_name
+        return True
+
     def reset_board():      # azzera tutta la board compresi i keycode. 0 è vuota e  11 è la posizione del secret code
         for row in range (12):
             single_row = [0,0,0,0,0]
@@ -814,9 +843,13 @@ init 1 python:          # all needed functions
                 persistent.show_score_update = "game3"
                 renpy.show_screen ("score_update")
                 renpy.call_screen ("message_x", "SCORE", "Player 1: " + str(persistent.score_player1) + "\n(White Pegs)\n\nPlayer 2: " + str(persistent.score_player2) + "\n(Black Pegs)")
+
             if score_option == "score_stats":
                 renpy.call_screen ("score_statistics")
+
+
             if score_option == "reset_score_game1_2":
+                #reset_score()
                 persistent.score_player = 0
                 persistent.score_app = 0
                 persistent.perf = []   
@@ -826,6 +859,7 @@ init 1 python:          # all needed functions
                         persistent.score_all [i][j] = 0
                 renpy.call_screen ("message_x", "SCORE", "Game1 and Game2 score has been reset")
             if score_option == "reset_score_game3":
+                #reset_score_two_players()
                 persistent.score_player1 = 0
                 persistent.score_player2 = 0
                 for i in range (30):
@@ -895,6 +929,16 @@ init 1 python:          # all needed functions
                             copilot[lc_color[i]] = True
         return copilot
 
+    def time_converter (integer_seconds):
+                integer_minutes = integer_seconds // 60
+                remaining_seconds = integer_seconds % 60
+                integer_hours = integer_minutes // 60
+                remaining_minutes = integer_minutes % 60
+                formatted_time = f"{integer_hours:02d}:{remaining_minutes:02d}:{remaining_seconds:02d}"
+                #narrator (formatted_time)
+                #return [integer_hours, remaining_minutes, remaining_seconds ]
+                return formatted_time       
+
     def dragged_code(row, code, draggable, droppable):
         for peg in range (1, colors+1):     # se è stato droppato un peg della colonna esterna, viene aggiornato code[]
             for hole in range (1,5):        
@@ -952,20 +996,6 @@ init 1 python:          # all needed functions
     def training_solved():
         return persistent.training_solved_6.count(1) + persistent.training_solved_8.count(1)
 
-    def drag_placed(drags, drop):   #valorizza le variabili draggable e droppable in caso d drop
-        if not drop:
-            return
-        store.draggable = drags[0].drag_name
-        store.droppable = drop.drag_name
-        return True
-
-    def time_converter (integer_seconds):
-                integer_minutes = integer_seconds // 60
-                remaining_seconds = integer_seconds % 60
-                integer_hours = integer_minutes // 60
-                remaining_minutes = integer_minutes % 60
-                formatted_time = f"{integer_hours:02d}:{remaining_minutes:02d}:{remaining_seconds:02d}"
-                return formatted_time   
 
 screen board_update():      # aggiorna la visualizzaione dei codici sulla board senza il codice segreto 
     fixed:
@@ -1055,12 +1085,14 @@ screen input_game1(row, colors, code):     # input delle giocate + checkmark ver
             for j in range (1, 5):      # riga di drop vuoti per posizionare i pegs
                 $ name = "hole_"+ str(j)
                 drag:
+                    # xalign 0.0
+                    # yalign 0.0
                     drag_name name
                     xpos peg_pos[row][j][1]
                     ypos peg_pos[row][j][2]
                     anchor (0.5, 0.5)
                     #child pegs[0]   #empty peg big come oggetto droppable
-                    child "00_empty_circle"   #white circle trasp 50% come oggetto droppable
+                    child "00_empty_circle"   #empty peg traspa come oggetto droppable
                     draggable False
                     droppable True
                     mouse_drop True  
@@ -1068,6 +1100,8 @@ screen input_game1(row, colors, code):     # input delle giocate + checkmark ver
                 $ name = "dropped_peg_"+ str(j-1)
                 if code[j-1] > 0:
                     drag:
+                        # xalign 0.5
+                        # yalign 0.5
                         drag_name name
                         add pegs[code[j-1]]
                         xpos peg_pos[row][j][1]
@@ -1083,6 +1117,8 @@ screen input_game1(row, colors, code):     # input delle giocate + checkmark ver
                     for j in range (1, 5):      
                         $ name = "dropped_peg_prec"+ str(i-1)+ str(j-1)
                         drag:
+                            # xalign 0.5
+                            # yalign 0.5
                             drag_name name
                             add pegs[board[i-1][j]]
                             xpos peg_pos[i-1][j][1]
@@ -1112,6 +1148,7 @@ screen input_game1(row, colors, code):     # input delle giocate + checkmark ver
             xpos 75
             anchor (0.5, 0.5)
             zoom 0.4 
+
     imagebutton:
         xpos 250
         ypos 250
@@ -1183,7 +1220,7 @@ screen input_game2(row, key_code):     # input dei key code + checkmark verde + 
                         xpos key_pos[row][j][1]
                         ypos key_pos[row][j][2]  
                         #child key_pegs_big[1]   #empty peg big come oggetto droppable
-                        child "key_empty_circle"    # white circle trasp 50% come oggetto droppable
+                        child "key_empty_circle"
                         draggable False
                         droppable True
                         mouse_drop True  
@@ -1241,12 +1278,14 @@ screen input_secret_code(colors, secret_code):     # input del codice segreto pe
             for j in range (1, 5):      # riga di drop vuoti per posizionare i pegs
                 $ name = "hole_"+ str(j)
                 drag:
+                    # xalign 0.5
+                    # yalign 0.5
                     drag_name name
                     xpos peg_pos[11][j][1]
                     ypos peg_pos[11][j][2]
                     anchor (0.5, 0.5)
                     #child pegs[0]   #empty peg big come oggetto droppable
-                    child "00_empty_circle"   # white circle trasp 50% come oggetto droppable
+                    child "00_empty_circle"   #empty peg traspa come oggetto droppable   
                     draggable False
                     droppable True
                     mouse_drop True  
@@ -1254,6 +1293,8 @@ screen input_secret_code(colors, secret_code):     # input del codice segreto pe
                 $ name = "dropped_peg_"+ str(j-1)
                 if secret_code[j-1] > 0:
                     drag:
+                        # xalign 0.5
+                        # yalign 0.5
                         drag_name name
                         add pegs[secret_code[j-1]]
                         anchor (0.5, 0.5)
@@ -1346,7 +1387,7 @@ screen tap_main_menu(message1, message2): # visualizza la freccia che indica il 
                 #text_color "#030331"
                 xalign 0.5
 
-screen print_mastermind():   #visualizza la scritta MASTER MIND
+screen mm_print_mastermind():   #visualizza la scritta MASTER MIND
     fixed:
         xpos -20
         ypos 70 
@@ -1364,9 +1405,9 @@ screen menu_button ():   # visualizza il bottone per richiamare il menu principa
         ypos 70
         idle "menu_btn"
         hover Transform("menu_btn", size=(130, 130), fit="contain")
-        action Hide("tap_main_menu"), Hide("message"), Show("menu")
+        action Hide("tap_main_menu"), Hide("message"), Show("mm_menu")
 
-screen menu():   # è il menu contestualizzato al richiamo delle modalità di gioco oppure mentre si gioca
+screen mm_menu():   # è il menu contestualizzato al richiamo delle modalità di gioco oppure mentre si gioca
     add "gui/overlay/confirm.png"
     frame:
         style_prefix "confirm"
@@ -1379,25 +1420,26 @@ screen menu():   # è il menu contestualizzato al richiamo delle modalità di gi
                     xalign 1.0
                     idle "x"
                     hover "x"
-                    action Hide("menu"), Return()
+                    action Hide("mm_menu"), Return()
             if persistent.choice == "none":                 # none = nessuna partita è attiva     
                 textbutton "• PLAY GAME 1":
-                    action Hide("menu"), SetVariable("persistent.choice", "game1"), Return()
+                    action Hide("mm_menu"), SetVariable("persistent.choice", "game1"), Return()
                 textbutton "• PLAY GAME 2":
-                    action Hide("menu"), SetVariable("persistent.choice", "game2"), Return()
+                    action Hide("mm_menu"), SetVariable("persistent.choice", "game2"), Return()
                 textbutton "• PLAY GAME 3":
-                    action Hide("menu"), SetVariable("persistent.choice", "game3"), Return()
+                    action Hide("mm_menu"), SetVariable("persistent.choice", "game3"), Return()
                 textbutton "• TRAINING":
-                    action Hide("menu"), SetVariable("persistent.choice", "training"), Return()
+                    action Hide("mm_menu"), SetVariable("persistent.choice", "training"), Return()
                 textbutton "• SCORE":
-                    action Hide("menu"), SetVariable("persistent.choice", "score"), Return()
+                    action Hide("mm_menu"), SetVariable("persistent.choice", "score"), Return()
                 textbutton "• SETTINGS":
-                    action Hide("menu"), SetVariable("persistent.choice", "settings"), Return()       
+                    action Hide("mm_menu"), SetVariable("persistent.choice", "settings"), Return()       
             if persistent.choice == "game1" or persistent.choice == "game2" or persistent.choice == "game3" or persistent.choice == "training":
                 textbutton "• CANCEL":          # voce menu CANCEL solo durante le partite
-                    action Hide("menu"), SetVariable("persistent.choice", "cancel"), Return()
+                    action Hide("mm_menu"), SetVariable("persistent.choice", "cancel"), Return()
             textbutton "• HELP":
-                action Hide("menu"), SetVariable("persistent.choice", "help_tips"), Return()
+                action Hide("mm_menu"), SetVariable("persistent.choice", "help_tips"), Return()
+                #action Show("tips"), Return()
             textbutton "• CLOSE THE APP":
                 action Quit(confirm=None)
                 
@@ -1429,6 +1471,8 @@ screen help_tips_view():  # menu Help and Tips
     $ message = message + "• The best code is generated in the background. To check if it is ready tap the {image=best_code_processing_tip} button. For slow devices, disable this feature from settings menu.\n\n"
     
     $ message = message + "{image=drag_tip} {color=#f20070}Drag and Drop.{/color} Drag and drop pegs to compose your attempts. You can take pegs from attempts already played, move a peg to another placeholder . To remove a peg, drag it out.\n\n"
+
+    #$ message = message + "{image=shield_tip} {color=#f20070}Secret Code.{/color} In GAME-1, if you want to give up and see the secret code, tap the shield on the game board.\n\n"
     
     $ message = message + "• {color=#f20070}Score.{/color} Like in the classic game, on the right side of game board the score is marked with white and black pegs.\n• For game1 and game2, the white pegs mark the player's score and the black pegs mark the App's score.\n• For game3, the score is relative to the two opposing players\n• Choose 'SCORE' from the main menu for more detailed information and for reset the two kind of score.\n\n"
 
@@ -1464,6 +1508,7 @@ screen score_statistics():     # visualizza il popup del punteggio
     zorder 200
     style_prefix "confirm"
     add "gui/overlay/confirm.png"
+    #$ message = "{b}Your score{/b}:\n\n"
     $ message = ''
     $ total_games = 0
     $ total =''
@@ -1486,6 +1531,9 @@ screen score_statistics():     # visualizza il popup del punteggio
         viewport id "my_image_viewport":
             draggable True
             mousewheel True
+            #xalign 0.5
+            #yalign 0.5
+            #spacing 45
             vbox:
                 xsize 780
                 xalign 1.0
@@ -1500,7 +1548,21 @@ screen score_statistics():     # visualizza il popup del punteggio
                     text_color "#000000"
                     xalign 0.5
                 text _(message)
-                text _(total)     
+                text _(total)
+                # textbutton _("\n• Reset score Game1 and Game2"):
+                #     xalign 0.5
+                #     text_color "#000078"
+                #     text_hover_color "#0099ff"
+                #     #text_bold True
+                #     text_align 0.5
+                #     action SetVariable("score_option", "reset_score_player_app"), Return() 
+                # textbutton _("\n• Reset score Game3"):
+                #     xalign 0.5
+                #     text_color "#000078"
+                #     text_hover_color "#0099ff"
+                #     #text_bold True
+                #     text_align 0.5
+                #     action SetVariable("score_option", "reset_score_two_players"), Return()         
 
 screen attempt_info(chance, tot_lc, left_code, left_code_bs, code_status, bs_inconsistent): # info visulaizzate cliccand la "i" di Info
     ## Ensure other screens do not get input while this screen is displayed.

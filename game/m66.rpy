@@ -162,9 +162,9 @@ init python:
                 adapted_code[1 + int(code[i])] += 1                         #ognuno di questi campi contiene quante volte il colore è presente nel codice
             return adapted_code
 
-        def make_matrix_from_file_renpy (self, colors, code):             #used by game3/4 and idented_played
+        def make_matrix_from_file_renpy (self, colors, code, prefix_file_name):             #used by game3/4 and idented_played
             #file = os.path.join('Played_Games', 'Game_' + str(colors) + '_' + code + '.txt')
-            file = 'Played_Games/' + 'Game_' + str(colors) + '_' + code + '.txt'
+            file = 'Played_Games/' + prefix_file_name + str(colors) + '_' + code + '.txt'
             #file = 'Game_' + str(colors) + '_' + code + '.txt'
             #dir = os.path.join('Played_Games', 'Game_')
             #narrator(file)   

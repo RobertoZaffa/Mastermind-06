@@ -1,16 +1,16 @@
-2024-11-22 14:23:17 UTC
+2024-12-27 12:47:00 UTC
 Windows-10-10.0.26100
 Ren'Py 8.3.3.24091901+nightly
 
-Early init took 0.06s
-Loading error handling took 0.03s
-Loading script took 0.17s
-Loading save slot metadata took 0.04s
+Early init took 0.08s
+Loading error handling took 0.02s
+Loading script took 0.20s
+Loading save slot metadata took 0.05s
 Loading persistent took 0.00s
 Running init code took 0.05s
 Loading analysis data took 0.01s
 Analyze and compile ATL took 0.00s
-Reloading save slot metadata took 0.04s
+Reloading save slot metadata took 0.03s
 Index archives took 0.00s
 Dump and make backups took 0.04s
 Cleaning cache took 0.00s
@@ -26,423 +26,7 @@ Build styles took 0.00s
 Load screen analysis took 0.02s
 Analyze screens took 0.00s
 Save screen analysis took 0.00s
-Prepare screens took 0.05s
-Save pyanalysis. took 0.00s
-Save bytecode. took 0.02s
-Running _start took 0.00s
-Interface start took 0.85s
-
-Initializing gl2 renderer:
-primary display bounds: (0, 0, 1920, 1080)
-swap interval: 1 frames
-Windowed mode.
-Vendor: "b'Intel'"
-Renderer: b'Intel(R) Iris(R) Xe Graphics'
-Version: b'4.6.0 - Build 31.0.101.4953'
-Display Info: None
-Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
-Maximum texture size: 4096x4096
-Resetting cache.
-Early init took 150.53s
-Loading error handling took 0.02s
-Loading script took 0.18s
-Loading save slot metadata took 0.04s
-Loading persistent took 0.00s
-Running init code took 0.02s
-Loading analysis data took 0.01s
-Analyze and compile ATL took 0.00s
-Reloading save slot metadata took 0.03s
-Index archives took 0.00s
-Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
-Dump and make backups took 0.03s
-Cleaning cache took 0.00s
-Making clean stores took 0.00s
-Initial gc took 0.03s
-DPI scale factor: 1.000000
-nvdrs: Loaded, about to disable thread optimizations.
-nvdrs: b"Couldn't load nvlib." (can be ignored)
-Creating interface object took 0.00s
-Cleaning stores took 0.00s
-Init translation took 0.03s
-Build styles took 0.00s
-Load screen analysis took 0.00s
-Analyze screens took 0.01s
-Save screen analysis took 0.02s
 Prepare screens took 0.04s
-Save pyanalysis. took 0.00s
-Save bytecode. took 0.01s
-Running _start took 0.00s
-Interface start took 0.83s
-
-Initializing gl2 renderer:
-primary display bounds: (0, 0, 1920, 1080)
-swap interval: 1 frames
-Windowed mode.
-Vendor: "b'Intel'"
-Renderer: b'Intel(R) Iris(R) Xe Graphics'
-Version: b'4.6.0 - Build 31.0.101.4953'
-Display Info: None
-Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
-Maximum texture size: 4096x4096
-Resetting cache.
-Early init took 250.99s
-Loading error handling took 0.01s
-Loading script took 0.30s
-Loading save slot metadata took 0.05s
-Loading persistent took 0.00s
-Running init code took 0.03s
-Loading analysis data took 0.01s
-Analyze and compile ATL took 0.00s
-Reloading save slot metadata took 0.04s
-Index archives took 0.00s
-Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
-Dump and make backups took 0.04s
-Cleaning cache took 0.00s
-Making clean stores took 0.00s
-Initial gc took 0.04s
-DPI scale factor: 1.000000
-nvdrs: Loaded, about to disable thread optimizations.
-nvdrs: b"Couldn't load nvlib." (can be ignored)
-Creating interface object took 0.00s
-Cleaning stores took 0.00s
-Init translation took 0.03s
-Build styles took 0.00s
-Load screen analysis took 0.00s
-Analyze screens took 0.01s
-Save screen analysis took 0.02s
-Prepare screens took 0.07s
-Save pyanalysis. took 0.02s
-Save bytecode. took 0.02s
-Running _start took 0.00s
-Interface start took 0.87s
-
-Initializing gl2 renderer:
-primary display bounds: (0, 0, 1920, 1080)
-swap interval: 1 frames
-Windowed mode.
-Vendor: "b'Intel'"
-Renderer: b'Intel(R) Iris(R) Xe Graphics'
-Version: b'4.6.0 - Build 31.0.101.4953'
-Display Info: None
-Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
-Maximum texture size: 4096x4096
-Resetting cache.
-Early init took 978.69s
-Loading error handling took 0.01s
-Loading script took 0.20s
-Loading save slot metadata took 0.04s
-Loading persistent took 0.00s
-
-File "game/script.rpy", line 683: invalid syntax
-    def dragged_code(code)
-DPI scale factor: 1.000000
-nvdrs: Loaded, about to disable thread optimizations.
-nvdrs: b"Couldn't load nvlib." (can be ignored)
-Interface start took 0.73s
-
-Initializing gl2 renderer:
-primary display bounds: (0, 0, 1920, 1080)
-swap interval: 1 frames
-Windowed mode.
-Vendor: "b'Intel'"
-Renderer: b'Intel(R) Iris(R) Xe Graphics'
-Version: b'4.6.0 - Build 31.0.101.4953'
-Display Info: None
-Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
-Maximum texture size: 4096x4096
-Resetting cache.
-Early init took 1002.97s
-Loading error handling took 0.01s
-Loading script took 0.22s
-Loading save slot metadata took 0.06s
-Loading persistent took 0.00s
-Running init code took 0.04s
-Loading analysis data took 0.02s
-Analyze and compile ATL took 0.01s
-Reloading save slot metadata took 0.06s
-Index archives took 0.00s
-Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
-Dump and make backups took 0.04s
-Cleaning cache took 0.00s
-Making clean stores took 0.00s
-Initial gc took 0.04s
-DPI scale factor: 1.000000
-nvdrs: Loaded, about to disable thread optimizations.
-nvdrs: b"Couldn't load nvlib." (can be ignored)
-Creating interface object took 0.00s
-Cleaning stores took 0.00s
-Init translation took 0.04s
-Build styles took 0.00s
-Load screen analysis took 0.00s
-Analyze screens took 0.02s
-Save screen analysis took 0.02s
-Prepare screens took 0.06s
-Save pyanalysis. took 0.03s
-Save bytecode. took 0.03s
-Running _start took 0.00s
-Interface start took 0.75s
-
-Initializing gl2 renderer:
-primary display bounds: (0, 0, 1920, 1080)
-swap interval: 1 frames
-Windowed mode.
-Vendor: "b'Intel'"
-Renderer: b'Intel(R) Iris(R) Xe Graphics'
-Version: b'4.6.0 - Build 31.0.101.4953'
-Display Info: None
-Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
-Maximum texture size: 4096x4096
-
-Full traceback:
-  File "game/script.rpy", line 6, in script
-    $ game_loop()
-  File "C:\Apps\renpy-8.3.3.24091901+nightly-sdk\renpy\ast.py", line 821, in execute
-    renpy.python.py_exec_bytecode(self.code.bytecode, self.hide, store=self.store)
-  File "C:\Apps\renpy-8.3.3.24091901+nightly-sdk\renpy\python.py", line 1178, in py_exec_bytecode
-    exec(bytecode, globals, locals)
-  File "game/script.rpy", line 6, in <module>
-    $ game_loop()
-  File "game/script.rpy", line 25, in game_loop
-    game1(colors)
-  File "game/script.rpy", line 135, in game1
-    code = dragged_code(code)
-  File "game/script.rpy", line 699, in dragged_code
-    for i in range (1,row+1):       # drag dei peg dalle righe precedenta a quella attuale
-NameError: name 'row' is not defined
-
-While running game code:
-  File "game/script.rpy", line 6, in script
-    $ game_loop()
-  File "game/script.rpy", line 6, in <module>
-    $ game_loop()
-  File "game/script.rpy", line 25, in game_loop
-    game1(colors)
-  File "game/script.rpy", line 135, in game1
-    code = dragged_code(code)
-  File "game/script.rpy", line 699, in dragged_code
-    for i in range (1,row+1):       # drag dei peg dalle righe precedenta a quella attuale
-NameError: name 'row' is not defined
-Resetting cache.
-Early init took 1050.30s
-Loading error handling took 0.01s
-Loading script took 0.21s
-Loading save slot metadata took 0.05s
-Loading persistent took 0.00s
-Running init code took 0.03s
-Loading analysis data took 0.01s
-Analyze and compile ATL took 0.00s
-Reloading save slot metadata took 0.05s
-Index archives took 0.00s
-Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
-Dump and make backups took 0.05s
-Cleaning cache took 0.00s
-Making clean stores took 0.00s
-Initial gc took 0.05s
-DPI scale factor: 1.000000
-nvdrs: Loaded, about to disable thread optimizations.
-nvdrs: b"Couldn't load nvlib." (can be ignored)
-Creating interface object took 0.00s
-Cleaning stores took 0.00s
-Init translation took 0.03s
-Build styles took 0.00s
-Load screen analysis took 0.00s
-Analyze screens took 0.01s
-Save screen analysis took 0.02s
-Prepare screens took 0.05s
-Save pyanalysis. took 0.00s
-Save bytecode. took 0.01s
-Running _start took 0.00s
-Interface start took 0.68s
-
-Initializing gl2 renderer:
-primary display bounds: (0, 0, 1920, 1080)
-swap interval: 1 frames
-Windowed mode.
-Vendor: "b'Intel'"
-Renderer: b'Intel(R) Iris(R) Xe Graphics'
-Version: b'4.6.0 - Build 31.0.101.4953'
-Display Info: None
-Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
-Maximum texture size: 4096x4096
-
-Full traceback:
-  File "game/script.rpy", line 6, in script
-    $ game_loop()
-  File "C:\Apps\renpy-8.3.3.24091901+nightly-sdk\renpy\ast.py", line 821, in execute
-    renpy.python.py_exec_bytecode(self.code.bytecode, self.hide, store=self.store)
-  File "C:\Apps\renpy-8.3.3.24091901+nightly-sdk\renpy\python.py", line 1178, in py_exec_bytecode
-    exec(bytecode, globals, locals)
-  File "game/script.rpy", line 6, in <module>
-    $ game_loop()
-  File "game/script.rpy", line 25, in game_loop
-    game1(colors)
-  File "game/script.rpy", line 162, in game1
-    board[row][i] = code[i-1]
-TypeError: 'NoneType' object is not subscriptable
-
-While running game code:
-  File "game/script.rpy", line 6, in script
-    $ game_loop()
-  File "game/script.rpy", line 6, in <module>
-    $ game_loop()
-  File "game/script.rpy", line 25, in game_loop
-    game1(colors)
-  File "game/script.rpy", line 162, in game1
-    board[row][i] = code[i-1]
-TypeError: 'NoneType' object is not subscriptable
-Resetting cache.
-Early init took 1182.90s
-Loading error handling took 0.01s
-Loading script took 0.22s
-Loading save slot metadata took 0.06s
-Loading persistent took 0.00s
-Running init code took 0.04s
-Loading analysis data took 0.01s
-Analyze and compile ATL took 0.00s
-Reloading save slot metadata took 0.06s
-Index archives took 0.00s
-Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
-Dump and make backups took 0.05s
-Cleaning cache took 0.00s
-Making clean stores took 0.00s
-Initial gc took 0.05s
-DPI scale factor: 1.000000
-nvdrs: Loaded, about to disable thread optimizations.
-nvdrs: b"Couldn't load nvlib." (can be ignored)
-Creating interface object took 0.00s
-Cleaning stores took 0.00s
-Init translation took 0.03s
-Build styles took 0.00s
-Load screen analysis took 0.00s
-Analyze screens took 0.02s
-Save screen analysis took 0.02s
-Prepare screens took 0.06s
-Save pyanalysis. took 0.02s
-Save bytecode. took 0.01s
-Running _start took 0.00s
-Interface start took 0.63s
-
-Initializing gl2 renderer:
-primary display bounds: (0, 0, 1920, 1080)
-swap interval: 1 frames
-Windowed mode.
-Vendor: "b'Intel'"
-Renderer: b'Intel(R) Iris(R) Xe Graphics'
-Version: b'4.6.0 - Build 31.0.101.4953'
-Display Info: None
-Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
-Maximum texture size: 4096x4096
-Resetting cache.
-Early init took 1420.85s
-Loading error handling took 0.01s
-Loading script took 0.20s
-Loading save slot metadata took 0.05s
-Loading persistent took 0.00s
-Running init code took 0.03s
-Loading analysis data took 0.01s
-Analyze and compile ATL took 0.00s
-Reloading save slot metadata took 0.04s
-Index archives took 0.00s
-Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
-Dump and make backups took 0.04s
-Cleaning cache took 0.00s
-Making clean stores took 0.00s
-Initial gc took 0.04s
-DPI scale factor: 1.000000
-nvdrs: Loaded, about to disable thread optimizations.
-nvdrs: b"Couldn't load nvlib." (can be ignored)
-Creating interface object took 0.00s
-Cleaning stores took 0.00s
-Init translation took 0.03s
-Build styles took 0.00s
-Load screen analysis took 0.00s
-Analyze screens took 0.01s
-Save screen analysis took 0.02s
-Prepare screens took 0.04s
-Save pyanalysis. took 0.00s
-Save bytecode. took 0.01s
-Running _start took 0.00s
-Interface start took 0.66s
-
-Initializing gl2 renderer:
-primary display bounds: (0, 0, 1920, 1080)
-swap interval: 1 frames
-Windowed mode.
-Vendor: "b'Intel'"
-Renderer: b'Intel(R) Iris(R) Xe Graphics'
-Version: b'4.6.0 - Build 31.0.101.4953'
-Display Info: None
-Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
-Maximum texture size: 4096x4096
-Resetting cache.
-Early init took 1712.98s
-Loading error handling took 0.01s
-Loading script took 0.24s
-Loading save slot metadata took 0.07s
-Loading persistent took 0.00s
-Running init code took 0.03s
-Loading analysis data took 0.02s
-Analyze and compile ATL took 0.01s
-Reloading save slot metadata took 0.07s
-Index archives took 0.00s
-Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
-Dump and make backups took 0.04s
-Cleaning cache took 0.00s
-Making clean stores took 0.00s
-Initial gc took 0.04s
-DPI scale factor: 1.000000
-nvdrs: Loaded, about to disable thread optimizations.
-nvdrs: b"Couldn't load nvlib." (can be ignored)
-Creating interface object took 0.00s
-Cleaning stores took 0.00s
-Init translation took 0.03s
-Build styles took 0.00s
-Load screen analysis took 0.00s
-Analyze screens took 0.01s
-Save screen analysis took 0.02s
-Prepare screens took 0.05s
-Save pyanalysis. took 0.00s
-Save bytecode. took 0.01s
-Running _start took 0.00s
-Interface start took 0.70s
-
-Initializing gl2 renderer:
-primary display bounds: (0, 0, 1920, 1080)
-swap interval: 1 frames
-Windowed mode.
-Vendor: "b'Intel'"
-Renderer: b'Intel(R) Iris(R) Xe Graphics'
-Version: b'4.6.0 - Build 31.0.101.4953'
-Display Info: None
-Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
-Maximum texture size: 4096x4096
-Resetting cache.
-Early init took 1907.44s
-Loading error handling took 0.01s
-Loading script took 0.21s
-Loading save slot metadata took 0.06s
-Loading persistent took 0.00s
-Running init code took 0.03s
-Loading analysis data took 0.01s
-Analyze and compile ATL took 0.00s
-Reloading save slot metadata took 0.07s
-Index archives took 0.00s
-Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
-Dump and make backups took 0.04s
-Cleaning cache took 0.00s
-Making clean stores took 0.00s
-Initial gc took 0.05s
-DPI scale factor: 1.000000
-nvdrs: Loaded, about to disable thread optimizations.
-nvdrs: b"Couldn't load nvlib." (can be ignored)
-Creating interface object took 0.00s
-Cleaning stores took 0.00s
-Init translation took 0.03s
-Build styles took 0.00s
-Load screen analysis took 0.00s
-Analyze screens took 0.01s
-Save screen analysis took 0.03s
-Prepare screens took 0.05s
 Save pyanalysis. took 0.00s
 Save bytecode. took 0.02s
 Running _start took 0.00s
@@ -459,36 +43,36 @@ Display Info: None
 Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
 Maximum texture size: 4096x4096
 Resetting cache.
-Early init took 2136.78s
-Loading error handling took 0.01s
+Early init took 74.74s
+Loading error handling took 0.02s
 Loading script took 0.21s
 Loading save slot metadata took 0.04s
 Loading persistent took 0.00s
-Running init code took 0.04s
+Running init code took 0.02s
 Loading analysis data took 0.01s
 Analyze and compile ATL took 0.00s
-Reloading save slot metadata took 0.05s
+Reloading save slot metadata took 0.02s
 Index archives took 0.00s
 Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
-Dump and make backups took 0.05s
+Dump and make backups took 0.04s
 Cleaning cache took 0.00s
 Making clean stores took 0.00s
-Initial gc took 0.06s
+Initial gc took 0.04s
 DPI scale factor: 1.000000
 nvdrs: Loaded, about to disable thread optimizations.
 nvdrs: b"Couldn't load nvlib." (can be ignored)
 Creating interface object took 0.00s
 Cleaning stores took 0.00s
-Init translation took 0.04s
+Init translation took 0.02s
 Build styles took 0.00s
 Load screen analysis took 0.00s
 Analyze screens took 0.01s
-Save screen analysis took 0.02s
+Save screen analysis took 0.01s
 Prepare screens took 0.05s
-Save pyanalysis. took 0.00s
-Save bytecode. took 0.02s
+Save pyanalysis. took 0.02s
+Save bytecode. took 0.01s
 Running _start took 0.00s
-Interface start took 0.77s
+Interface start took 0.64s
 
 Initializing gl2 renderer:
 primary display bounds: (0, 0, 1920, 1080)
@@ -501,15 +85,98 @@ Display Info: None
 Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
 Maximum texture size: 4096x4096
 Resetting cache.
-Early init took 2311.61s
-Loading error handling took 0.01s
-Loading script took 0.22s
-Loading save slot metadata took 0.04s
+Early init took 1164.35s
+Loading error handling took 0.02s
+Loading script took 0.25s
+Loading save slot metadata took 0.07s
 Loading persistent took 0.00s
-Running init code took 0.03s
-Loading analysis data took 0.01s
+Running init code took 0.04s
+Loading analysis data took 0.02s
 Analyze and compile ATL took 0.00s
 Reloading save slot metadata took 0.04s
+Index archives took 0.00s
+Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
+Dump and make backups took 0.05s
+Cleaning cache took 0.00s
+Making clean stores took 0.00s
+Initial gc took 0.04s
+DPI scale factor: 1.000000
+nvdrs: Loaded, about to disable thread optimizations.
+nvdrs: b"Couldn't load nvlib." (can be ignored)
+Creating interface object took 0.00s
+Cleaning stores took 0.00s
+Init translation took 0.04s
+Build styles took 0.00s
+Load screen analysis took 0.00s
+Analyze screens took 0.01s
+Save screen analysis took 0.02s
+Prepare screens took 0.06s
+Save pyanalysis. took 0.02s
+Save bytecode. took 0.03s
+Running _start took 0.00s
+Interface start took 0.71s
+
+Initializing gl2 renderer:
+primary display bounds: (0, 0, 1920, 1080)
+swap interval: 1 frames
+Windowed mode.
+Vendor: "b'Intel'"
+Renderer: b'Intel(R) Iris(R) Xe Graphics'
+Version: b'4.6.0 - Build 31.0.101.4953'
+Display Info: None
+Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
+Maximum texture size: 4096x4096
+Resetting cache.
+Early init took 1365.65s
+Loading error handling took 0.01s
+Loading script took 0.11s
+Loading save slot metadata took 0.04s
+Loading persistent took 0.00s
+Running init code took 0.02s
+Loading analysis data took 0.01s
+Analyze and compile ATL took 0.00s
+Reloading save slot metadata took 0.02s
+Index archives took 0.00s
+Dump and make backups took 0.03s
+Cleaning cache took 0.00s
+Making clean stores took 0.00s
+Initial gc took 0.04s
+DPI scale factor: 1.000000
+nvdrs: Loaded, about to disable thread optimizations.
+nvdrs: b"Couldn't load nvlib." (can be ignored)
+Creating interface object took 0.00s
+Cleaning stores took 0.00s
+Init translation took 0.03s
+Build styles took 0.00s
+Load screen analysis took 0.02s
+Analyze screens took 0.00s
+Save screen analysis took 0.00s
+Prepare screens took 0.04s
+Save pyanalysis. took 0.00s
+Save bytecode. took 0.00s
+Running _start took 0.00s
+Interface start took 0.66s
+
+Initializing gl2 renderer:
+primary display bounds: (0, 0, 1920, 1080)
+swap interval: 1 frames
+Windowed mode.
+Vendor: "b'Intel'"
+Renderer: b'Intel(R) Iris(R) Xe Graphics'
+Version: b'4.6.0 - Build 31.0.101.4953'
+Display Info: None
+Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
+Maximum texture size: 4096x4096
+Resetting cache.
+Early init took 1604.39s
+Loading error handling took 0.01s
+Loading script took 0.22s
+Loading save slot metadata took 0.05s
+Loading persistent took 0.00s
+Running init code took 0.03s
+Loading analysis data took 0.02s
+Analyze and compile ATL took 0.00s
+Reloading save slot metadata took 0.03s
 Index archives took 0.00s
 Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
 Dump and make backups took 0.04s
@@ -530,6 +197,89 @@ Prepare screens took 0.06s
 Save pyanalysis. took 0.02s
 Save bytecode. took 0.02s
 Running _start took 0.00s
+Interface start took 0.82s
+
+Initializing gl2 renderer:
+primary display bounds: (0, 0, 1920, 1080)
+swap interval: 1 frames
+Windowed mode.
+Vendor: "b'Intel'"
+Renderer: b'Intel(R) Iris(R) Xe Graphics'
+Version: b'4.6.0 - Build 31.0.101.4953'
+Display Info: None
+Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
+Maximum texture size: 4096x4096
+Resetting cache.
+Early init took 1609.53s
+Loading error handling took 0.01s
+Loading script took 0.12s
+Loading save slot metadata took 0.05s
+Loading persistent took 0.00s
+Running init code took 0.03s
+Loading analysis data took 0.01s
+Analyze and compile ATL took 0.00s
+Reloading save slot metadata took 0.02s
+Index archives took 0.00s
+Dump and make backups took 0.04s
+Cleaning cache took 0.00s
+Making clean stores took 0.00s
+Initial gc took 0.04s
+DPI scale factor: 1.000000
+nvdrs: Loaded, about to disable thread optimizations.
+nvdrs: b"Couldn't load nvlib." (can be ignored)
+Creating interface object took 0.00s
+Cleaning stores took 0.00s
+Init translation took 0.04s
+Build styles took 0.00s
+Load screen analysis took 0.04s
+Analyze screens took 0.00s
+Save screen analysis took 0.00s
+Prepare screens took 0.09s
+Save pyanalysis. took 0.00s
+Save bytecode. took 0.00s
+Running _start took 0.00s
+Interface start took 0.80s
+
+Initializing gl2 renderer:
+primary display bounds: (0, 0, 1920, 1080)
+swap interval: 1 frames
+Windowed mode.
+Vendor: "b'Intel'"
+Renderer: b'Intel(R) Iris(R) Xe Graphics'
+Version: b'4.6.0 - Build 31.0.101.4953'
+Display Info: None
+Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
+Maximum texture size: 4096x4096
+Resetting cache.
+Early init took 2013.70s
+Loading error handling took 0.01s
+Loading script took 0.21s
+Loading save slot metadata took 0.04s
+Loading persistent took 0.00s
+Running init code took 0.02s
+Loading analysis data took 0.01s
+Analyze and compile ATL took 0.00s
+Reloading save slot metadata took 0.02s
+Index archives took 0.00s
+Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
+Dump and make backups took 0.04s
+Cleaning cache took 0.00s
+Making clean stores took 0.00s
+Initial gc took 0.04s
+DPI scale factor: 1.000000
+nvdrs: Loaded, about to disable thread optimizations.
+nvdrs: b"Couldn't load nvlib." (can be ignored)
+Creating interface object took 0.00s
+Cleaning stores took 0.00s
+Init translation took 0.03s
+Build styles took 0.00s
+Load screen analysis took 0.00s
+Analyze screens took 0.01s
+Save screen analysis took 0.02s
+Prepare screens took 0.06s
+Save pyanalysis. took 0.02s
+Save bytecode. took 0.01s
+Running _start took 0.00s
 Interface start took 0.65s
 
 Initializing gl2 renderer:
@@ -543,102 +293,18 @@ Display Info: None
 Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
 Maximum texture size: 4096x4096
 Resetting cache.
-Early init took 2324.08s
-Loading error handling took 0.02s
-Loading script took 0.37s
-Loading save slot metadata took 0.09s
-Loading persistent took 0.00s
-Running init code took 0.05s
-Loading analysis data took 0.03s
-Analyze and compile ATL took 0.00s
-Reloading save slot metadata took 0.11s
-Index archives took 0.00s
-Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
-Dump and make backups took 0.10s
-Cleaning cache took 0.00s
-Making clean stores took 0.00s
-Initial gc took 0.07s
-DPI scale factor: 1.000000
-nvdrs: Loaded, about to disable thread optimizations.
-nvdrs: b"Couldn't load nvlib." (can be ignored)
-Creating interface object took 0.00s
-Cleaning stores took 0.00s
-Init translation took 0.07s
-Build styles took 0.00s
-Load screen analysis took 0.00s
-Analyze screens took 0.01s
-Save screen analysis took 0.02s
-Prepare screens took 0.10s
-Save pyanalysis. took 0.00s
-Save bytecode. took 0.02s
-Running _start took 0.00s
-Interface start took 0.77s
-
-Initializing gl2 renderer:
-primary display bounds: (0, 0, 1920, 1080)
-swap interval: 1 frames
-Windowed mode.
-Vendor: "b'Intel'"
-Renderer: b'Intel(R) Iris(R) Xe Graphics'
-Version: b'4.6.0 - Build 31.0.101.4953'
-Display Info: None
-Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
-Maximum texture size: 4096x4096
-Resetting cache.
-Early init took 2656.57s
+Early init took 2115.78s
 Loading error handling took 0.01s
-Loading script took 0.22s
-Loading save slot metadata took 0.04s
-Loading persistent took 0.00s
-Running init code took 0.02s
-Loading analysis data took 0.02s
-Analyze and compile ATL took 0.00s
-Reloading save slot metadata took 0.07s
-Index archives took 0.00s
-Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
-Dump and make backups took 0.07s
-Cleaning cache took 0.00s
-Making clean stores took 0.00s
-Initial gc took 0.06s
-DPI scale factor: 1.000000
-nvdrs: Loaded, about to disable thread optimizations.
-nvdrs: b"Couldn't load nvlib." (can be ignored)
-Creating interface object took 0.00s
-Cleaning stores took 0.00s
-Init translation took 0.04s
-Build styles took 0.00s
-Load screen analysis took 0.00s
-Analyze screens took 0.01s
-Save screen analysis took 0.02s
-Prepare screens took 0.08s
-Save pyanalysis. took 0.02s
-Save bytecode. took 0.02s
-Running _start took 0.00s
-Interface start took 0.75s
-
-Initializing gl2 renderer:
-primary display bounds: (0, 0, 1920, 1080)
-swap interval: 1 frames
-Windowed mode.
-Vendor: "b'Intel'"
-Renderer: b'Intel(R) Iris(R) Xe Graphics'
-Version: b'4.6.0 - Build 31.0.101.4953'
-Display Info: None
-Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
-Maximum texture size: 4096x4096
-Resetting cache.
-Early init took 3117.04s
-Loading error handling took 0.01s
-Loading script took 0.19s
-Loading save slot metadata took 0.04s
+Loading script took 0.20s
+Loading save slot metadata took 0.05s
 Loading persistent took 0.00s
 Running init code took 0.02s
 Loading analysis data took 0.01s
 Analyze and compile ATL took 0.00s
-Reloading save slot metadata took 0.04s
+Reloading save slot metadata took 0.03s
 Index archives took 0.00s
 Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
-Dump and make backups took 0.04s
+Dump and make backups took 0.05s
 Cleaning cache took 0.00s
 Making clean stores took 0.00s
 Initial gc took 0.04s
@@ -647,16 +313,16 @@ nvdrs: Loaded, about to disable thread optimizations.
 nvdrs: b"Couldn't load nvlib." (can be ignored)
 Creating interface object took 0.00s
 Cleaning stores took 0.00s
-Init translation took 0.04s
+Init translation took 0.03s
 Build styles took 0.00s
 Load screen analysis took 0.00s
 Analyze screens took 0.01s
 Save screen analysis took 0.02s
-Prepare screens took 0.07s
+Prepare screens took 0.06s
 Save pyanalysis. took 0.02s
-Save bytecode. took 0.02s
+Save bytecode. took 0.01s
 Running _start took 0.00s
-Interface start took 0.68s
+Interface start took 0.65s
 
 Initializing gl2 renderer:
 primary display bounds: (0, 0, 1920, 1080)
@@ -668,42 +334,16 @@ Version: b'4.6.0 - Build 31.0.101.4953'
 Display Info: None
 Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
 Maximum texture size: 4096x4096
-
-Full traceback:
-  File "game/script.rpy", line 6, in script
-    $ game_loop()
-  File "C:\Apps\renpy-8.3.3.24091901+nightly-sdk\renpy\ast.py", line 821, in execute
-    renpy.python.py_exec_bytecode(self.code.bytecode, self.hide, store=self.store)
-  File "C:\Apps\renpy-8.3.3.24091901+nightly-sdk\renpy\python.py", line 1178, in py_exec_bytecode
-    exec(bytecode, globals, locals)
-  File "game/script.rpy", line 6, in <module>
-    $ game_loop()
-  File "game/script.rpy", line 27, in game_loop
-    game2(colors)
-  File "game/script.rpy", line 240, in game2
-    secret_code = dragged_secret_code(row, secret_code, draggable, droppable)
-UnboundLocalError: local variable 'row' referenced before assignment
-
-While running game code:
-  File "game/script.rpy", line 6, in script
-    $ game_loop()
-  File "game/script.rpy", line 6, in <module>
-    $ game_loop()
-  File "game/script.rpy", line 27, in game_loop
-    game2(colors)
-  File "game/script.rpy", line 240, in game2
-    secret_code = dragged_secret_code(row, secret_code, draggable, droppable)
-UnboundLocalError: local variable 'row' referenced before assignment
 Resetting cache.
-Early init took 3193.17s
+Early init took 2739.40s
 Loading error handling took 0.01s
-Loading script took 0.20s
-Loading save slot metadata took 0.05s
+Loading script took 0.21s
+Loading save slot metadata took 0.04s
 Loading persistent took 0.00s
 Running init code took 0.03s
-Loading analysis data took 0.01s
+Loading analysis data took 0.02s
 Analyze and compile ATL took 0.00s
-Reloading save slot metadata took 0.05s
+Reloading save slot metadata took 0.03s
 Index archives took 0.00s
 Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
 Dump and make backups took 0.04s
@@ -715,13 +355,13 @@ nvdrs: Loaded, about to disable thread optimizations.
 nvdrs: b"Couldn't load nvlib." (can be ignored)
 Creating interface object took 0.00s
 Cleaning stores took 0.00s
-Init translation took 0.03s
+Init translation took 0.05s
 Build styles took 0.00s
 Load screen analysis took 0.00s
-Analyze screens took 0.01s
+Analyze screens took 0.02s
 Save screen analysis took 0.02s
-Prepare screens took 0.04s
-Save pyanalysis. took 0.00s
+Prepare screens took 0.06s
+Save pyanalysis. took 0.02s
 Save bytecode. took 0.01s
 Running _start took 0.00s
 Interface start took 0.63s
@@ -737,21 +377,105 @@ Display Info: None
 Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
 Maximum texture size: 4096x4096
 Resetting cache.
-Early init took 3411.34s
+Early init took 3076.95s
 Loading error handling took 0.01s
-Loading script took 0.21s
-Loading save slot metadata took 0.05s
+Loading script took 0.23s
+Loading save slot metadata took 0.04s
 Loading persistent took 0.00s
-Running init code took 0.03s
+Running init code took 0.02s
 Loading analysis data took 0.01s
 Analyze and compile ATL took 0.00s
-Reloading save slot metadata took 0.05s
+Reloading save slot metadata took 0.02s
 Index archives took 0.00s
 Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
 Dump and make backups took 0.04s
 Cleaning cache took 0.00s
 Making clean stores took 0.00s
-Initial gc took 0.05s
+Initial gc took 0.04s
+DPI scale factor: 1.000000
+nvdrs: Loaded, about to disable thread optimizations.
+nvdrs: b"Couldn't load nvlib." (can be ignored)
+Creating interface object took 0.00s
+Cleaning stores took 0.00s
+Init translation took 0.03s
+Build styles took 0.00s
+Load screen analysis took 0.00s
+Analyze screens took 0.01s
+Save screen analysis took 0.02s
+Prepare screens took 0.05s
+Save pyanalysis. took 0.02s
+Save bytecode. took 0.01s
+Running _start took 0.00s
+Interface start took 0.65s
+
+Initializing gl2 renderer:
+primary display bounds: (0, 0, 1920, 1080)
+swap interval: 1 frames
+Windowed mode.
+Vendor: "b'Intel'"
+Renderer: b'Intel(R) Iris(R) Xe Graphics'
+Version: b'4.6.0 - Build 31.0.101.4953'
+Display Info: None
+Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
+Maximum texture size: 4096x4096
+Resetting cache.
+Early init took 3302.49s
+Loading error handling took 0.02s
+Loading script took 0.22s
+Loading save slot metadata took 0.07s
+Loading persistent took 0.00s
+Running init code took 0.03s
+Loading analysis data took 0.01s
+Analyze and compile ATL took 0.00s
+Reloading save slot metadata took 0.02s
+Index archives took 0.00s
+Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
+Dump and make backups took 0.04s
+Cleaning cache took 0.00s
+Making clean stores took 0.00s
+Initial gc took 0.04s
+DPI scale factor: 1.000000
+nvdrs: Loaded, about to disable thread optimizations.
+nvdrs: b"Couldn't load nvlib." (can be ignored)
+Creating interface object took 0.00s
+Cleaning stores took 0.00s
+Init translation took 0.03s
+Build styles took 0.00s
+Load screen analysis took 0.00s
+Analyze screens took 0.01s
+Save screen analysis took 0.02s
+Prepare screens took 0.06s
+Save pyanalysis. took 0.02s
+Save bytecode. took 0.01s
+Running _start took 0.00s
+Interface start took 0.64s
+
+Initializing gl2 renderer:
+primary display bounds: (0, 0, 1920, 1080)
+swap interval: 1 frames
+Windowed mode.
+Vendor: "b'Intel'"
+Renderer: b'Intel(R) Iris(R) Xe Graphics'
+Version: b'4.6.0 - Build 31.0.101.4953'
+Display Info: None
+Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
+Maximum texture size: 4096x4096
+Resetting cache.
+Early init took 6668.67s
+Loading error handling took 0.02s
+Loading script took 0.25s
+Loading save slot metadata took 0.07s
+Loading persistent took 0.00s
+Running init code took 0.03s
+Loading analysis data took 0.01s
+Analyze and compile ATL took 0.00s
+Reloading save slot metadata took 0.03s
+Index archives took 0.00s
+Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
+Dump and make backups took 0.06s
+Cleaning cache took 0.00s
+Making clean stores took 0.00s
+Initial gc took 0.07s
 DPI scale factor: 1.000000
 nvdrs: Loaded, about to disable thread optimizations.
 nvdrs: b"Couldn't load nvlib." (can be ignored)
@@ -763,10 +487,176 @@ Load screen analysis took 0.00s
 Analyze screens took 0.01s
 Save screen analysis took 0.02s
 Prepare screens took 0.06s
-Save pyanalysis. took 0.02s
-Save bytecode. took 0.01s
+Save pyanalysis. took 0.03s
+Save bytecode. took 0.02s
 Running _start took 0.00s
-Interface start took 0.72s
+Interface start took 0.83s
+
+Initializing gl2 renderer:
+primary display bounds: (0, 0, 1920, 1080)
+swap interval: 1 frames
+Windowed mode.
+Vendor: "b'Intel'"
+Renderer: b'Intel(R) Iris(R) Xe Graphics'
+Version: b'4.6.0 - Build 31.0.101.4953'
+Display Info: None
+Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
+Maximum texture size: 4096x4096
+Resetting cache.
+Early init took 7366.09s
+Loading error handling took 0.01s
+Loading script took 0.27s
+Loading save slot metadata took 0.06s
+Loading persistent took 0.00s
+Running init code took 0.04s
+Loading analysis data took 0.02s
+Analyze and compile ATL took 0.00s
+Reloading save slot metadata took 0.03s
+Index archives took 0.00s
+Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
+Dump and make backups took 0.07s
+Cleaning cache took 0.00s
+Making clean stores took 0.00s
+Initial gc took 0.06s
+DPI scale factor: 1.000000
+nvdrs: Loaded, about to disable thread optimizations.
+nvdrs: b"Couldn't load nvlib." (can be ignored)
+Creating interface object took 0.00s
+Cleaning stores took 0.00s
+Init translation took 0.04s
+Build styles took 0.00s
+Load screen analysis took 0.00s
+Analyze screens took 0.02s
+Save screen analysis took 0.02s
+Prepare screens took 0.06s
+Save pyanalysis. took 0.01s
+Save bytecode. took 0.02s
+Running _start took 0.00s
+Interface start took 0.67s
+
+Initializing gl2 renderer:
+primary display bounds: (0, 0, 1920, 1080)
+swap interval: 1 frames
+Windowed mode.
+Vendor: "b'Intel'"
+Renderer: b'Intel(R) Iris(R) Xe Graphics'
+Version: b'4.6.0 - Build 31.0.101.4953'
+Display Info: None
+Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
+Maximum texture size: 4096x4096
+Resetting cache.
+Early init took 7499.44s
+Loading error handling took 0.01s
+Loading script took 0.21s
+Loading save slot metadata took 0.06s
+Loading persistent took 0.00s
+Running init code took 0.03s
+Loading analysis data took 0.01s
+Analyze and compile ATL took 0.00s
+Reloading save slot metadata took 0.03s
+Index archives took 0.00s
+Backing up script files to 'C:\\Users\\ROBERTO.ZAFFANELLA\\AppData\\Roaming/RenPy/backups\\Mastermind 06':
+Dump and make backups took 0.04s
+Cleaning cache took 0.00s
+Making clean stores took 0.00s
+Initial gc took 0.04s
+DPI scale factor: 1.000000
+nvdrs: Loaded, about to disable thread optimizations.
+nvdrs: b"Couldn't load nvlib." (can be ignored)
+Creating interface object took 0.00s
+Cleaning stores took 0.00s
+Init translation took 0.03s
+Build styles took 0.00s
+Load screen analysis took 0.00s
+Analyze screens took 0.02s
+Save screen analysis took 0.02s
+Prepare screens took 0.07s
+Save pyanalysis. took 0.02s
+Save bytecode. took 0.02s
+Running _start took 0.00s
+Interface start took 0.64s
+
+Initializing gl2 renderer:
+primary display bounds: (0, 0, 1920, 1080)
+swap interval: 1 frames
+Windowed mode.
+Vendor: "b'Intel'"
+Renderer: b'Intel(R) Iris(R) Xe Graphics'
+Version: b'4.6.0 - Build 31.0.101.4953'
+Display Info: None
+Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
+Maximum texture size: 4096x4096
+Resetting cache.
+Early init took 7508.58s
+Loading error handling took 0.01s
+Loading script took 0.10s
+Loading save slot metadata took 0.04s
+Loading persistent took 0.00s
+Running init code took 0.02s
+Loading analysis data took 0.01s
+Analyze and compile ATL took 0.00s
+Reloading save slot metadata took 0.02s
+Index archives took 0.00s
+Dump and make backups took 0.03s
+Cleaning cache took 0.00s
+Making clean stores took 0.00s
+Initial gc took 0.04s
+DPI scale factor: 1.000000
+nvdrs: Loaded, about to disable thread optimizations.
+nvdrs: b"Couldn't load nvlib." (can be ignored)
+Creating interface object took 0.00s
+Cleaning stores took 0.00s
+Init translation took 0.03s
+Build styles took 0.00s
+Load screen analysis took 0.02s
+Analyze screens took 0.00s
+Save screen analysis took 0.00s
+Prepare screens took 0.05s
+Save pyanalysis. took 0.00s
+Save bytecode. took 0.00s
+Running _start took 0.00s
+Interface start took 0.65s
+
+Initializing gl2 renderer:
+primary display bounds: (0, 0, 1920, 1080)
+swap interval: 1 frames
+Windowed mode.
+Vendor: "b'Intel'"
+Renderer: b'Intel(R) Iris(R) Xe Graphics'
+Version: b'4.6.0 - Build 31.0.101.4953'
+Display Info: None
+Screen sizes: virtual=(1080, 1920) physical=(550, 978) drawable=(550, 978)
+Maximum texture size: 4096x4096
+Resetting cache.
+Early init took 7557.31s
+Loading error handling took 0.01s
+Loading script took 0.11s
+Loading save slot metadata took 0.04s
+Loading persistent took 0.00s
+Running init code took 0.02s
+Loading analysis data took 0.01s
+Analyze and compile ATL took 0.00s
+Reloading save slot metadata took 0.02s
+Index archives took 0.00s
+Dump and make backups took 0.03s
+Cleaning cache took 0.00s
+Making clean stores took 0.00s
+Initial gc took 0.04s
+DPI scale factor: 1.000000
+nvdrs: Loaded, about to disable thread optimizations.
+nvdrs: b"Couldn't load nvlib." (can be ignored)
+Creating interface object took 0.00s
+Cleaning stores took 0.00s
+Init translation took 0.04s
+Build styles took 0.00s
+Load screen analysis took 0.02s
+Analyze screens took 0.00s
+Save screen analysis took 0.00s
+Prepare screens took 0.04s
+Save pyanalysis. took 0.00s
+Save bytecode. took 0.00s
+Running _start took 0.00s
+Interface start took 0.70s
 
 Initializing gl2 renderer:
 primary display bounds: (0, 0, 1920, 1080)
