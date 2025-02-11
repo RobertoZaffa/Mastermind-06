@@ -1,37 +1,34 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "renpy/common/00keymap.rpy", line 504, in script
-    python hide:
-  File "renpy/common/00keymap.rpy", line 504, in <module>
-    python hide:
-  File "renpy/common/00keymap.rpy", line 528, in _execute_python_hide
-    renpy.save("_reload-1", "reload save game")
-PicklingError: Can't pickle <function copilot at 0x0000000004937c10>: it's not the same object as store.copilot
+  File "game/script.rpy", line 6, in script
+    $ start_game()
+  File "game/script.rpy", line 6, in <module>
+    $ start_game()
+  File "game/script.rpy", line 33, in start_game
+    game1(colors)
+  File "game/script.rpy", line 118, in game1
+    db_lc, db_bc = thread.join()
+TypeError: cannot unpack non-iterable NoneType object
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "renpy/common/00keymap.rpy", line 504, in script
-    python hide:
-  File "C:\Apps\renpy-8.3.3.24091901+nightly-sdk\renpy\ast.py", line 821, in execute
+  File "game/script.rpy", line 6, in script
+    $ start_game()
+  File "C:\Apps\renpy-8.3.3-sdk\renpy\ast.py", line 821, in execute
     renpy.python.py_exec_bytecode(self.code.bytecode, self.hide, store=self.store)
-  File "C:\Apps\renpy-8.3.3.24091901+nightly-sdk\renpy\python.py", line 1178, in py_exec_bytecode
+  File "C:\Apps\renpy-8.3.3-sdk\renpy\python.py", line 1178, in py_exec_bytecode
     exec(bytecode, globals, locals)
-  File "renpy/common/00keymap.rpy", line 504, in <module>
-    python hide:
-  File "renpy/common/00keymap.rpy", line 528, in _execute_python_hide
-    renpy.save("_reload-1", "reload save game")
-  File "C:\Apps\renpy-8.3.3.24091901+nightly-sdk\renpy\loadsave.py", line 431, in save
-    reraise(t, e, tb)
-  File "lib/python3.9/future/utils/__init__.py", line 444, in raise_
-  File "C:\Apps\renpy-8.3.3.24091901+nightly-sdk\renpy\loadsave.py", line 417, in save
-    dump((roots, renpy.game.log), logf)
-  File "C:\Apps\renpy-8.3.3.24091901+nightly-sdk\renpy\compat\pickle.py", line 107, in dump
-    pickle.dump(o, f, pickle.HIGHEST_PROTOCOL if highest else PROTOCOL)
-PicklingError: Can't pickle <function copilot at 0x0000000004937c10>: it's not the same object as store.copilot
+  File "game/script.rpy", line 6, in <module>
+    $ start_game()
+  File "game/script.rpy", line 33, in start_game
+    game1(colors)
+  File "game/script.rpy", line 118, in game1
+    db_lc, db_bc = thread.join()
+TypeError: cannot unpack non-iterable NoneType object
 
 Windows-10-10.0.26100 AMD64
-Ren'Py 8.3.3.24091901+nightly
+Ren'Py 8.3.3.24111502
 Mastermind 1.0
-Fri Dec 27 11:55:13 2024
+Thu Feb  6 12:09:33 2025

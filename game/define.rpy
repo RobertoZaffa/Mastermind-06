@@ -55,9 +55,9 @@ image x:
     "x.png"
     zoom 0.600
 
-image arrow:
-    "arrow.png"
-    zoom 0.4
+# image freccia_su:
+#     "arrow_up.png"
+#     zoom 0.4
 
 #######################
 
@@ -263,13 +263,14 @@ init 0 python:
 
 init -1 python:
     import random
-    from threading import Thread
+    if not renpy.emscripten:                # in esecuzione su windows, linux e mobile
+        from threading import Thread
     import time
 
 default persistent.choice = "none"           # valori che può assumere: play_6, play_8, challenge_6, challenge_8, none
 default persistent.status = "on_game"        # valori che può assumere: on_game, final
 default persistent.score_all = [[0 for i in range(5)] for j in range(30)]
-default persistent.score_player = 0     # giocatore contro l'app (game1 e game2)
+default persistent.score_player = 0     # giocatore contro l'app (ONE PLAYER e CPU PLAYER)
 default persistent.score_player1 = 0    # giocatore 1. E' il primo che gioca e il punteggio è segnato con pioli binachi (game3)
 default persistent.score_player2 = 0    # giocatore 2. E' il secondo che gioca e il punteggio è segnato con pioli binachi (game3)
 default persistent.score_app = 0
@@ -280,7 +281,10 @@ default persistent.total_time = 0
 default persistent.total_time_converted = [0,0,0]
 default persistent.welcome = True
 default persistent.sound = False
-default persistent.training_solved_6 = [0] * 2926
-default persistent.training_solved_8 = [0] * 2926
-default colors = 6
+default persistent.training_solved_6 = [0] * 1128
+default persistent.training_solved_8 = [0] * 2608
+default persistent.training_solved_basic_6 = [0] * 787
+default persistent.training_solved_basic_8 = [0] * 2450
+default persistent.colors = 6
+default colors = persistent.colors
 define _confirm_quit = False

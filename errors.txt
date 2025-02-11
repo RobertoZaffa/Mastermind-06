@@ -2,9 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 549: invalid syntax
-        global copilot_on = False
-                           ^
+File "game/define.rpy", line 270: expected statement.
+    renpy.persistent._clear(progress=False) 
+                                            ^
 
 Ren'Py Version: Ren'Py 8.3.3.24091901+nightly
-Mon Dec 23 22:09:48 2024
+Thu Feb  6 09:21:50 2025
