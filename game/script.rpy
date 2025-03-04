@@ -26,13 +26,14 @@ init 1 python:          # starat game + game loop
         else:
             #renpy.show_screen("tap_main_menu", "WELCOME", "Tap the menu button")
             renpy.show_screen("message", "WELCOME", "Tap the menu button", arrow="arrow_up", arrow_x=930, arrow_y=200)
-        if renpy.emscripten:                            # Se è in esecuzione nel browser...
-            persistent.best_code_active = False
         persistent.show_score_update = "not_show"   # può essere: "game1-game2" o "game3" o "not_show"
         renpy.show_screen("score_update")       #visualizza lo score basato sui pegs
         while True:                             # game loop
             if persistent.choice == "game1":
-                game1(colors)
+                if not renpy.emscripten:
+                    game1(colors)
+                else:
+                    game1_web(colors)
             if persistent.choice == "game2":
                 game2(colors)
             if persistent.choice == "game3":
@@ -97,9 +98,9 @@ init 1 python:          # all needed functions
         
         for i in range(1,5): board[11][i] = int(secret_code[0][i-1])        # mette il codice segreto nella posizione 11 della board
         if persistent.best_code_active:
-            thread = CustomThread(target=nothing())                          # per fare in modo che il test: if not thread.is_alive():  in menu non dia errore con row = 1
-            thread.start()
-            thread.join()         
+            thread = CustomThread(target=nothing())                         # per fare in modo che il test: if not thread.is_alive():  in menu non dia errore con row = 1
+            thread.start()                                                  # esegue la funzione nothing()
+            thread.join()                                                   # attende che la funzione sia termninata
         start_time = time.time()                                            # usato per lo score 
         board_close_update()
         persistent.show_score_update = "game1-game2"   # "game1-game2" "game3" "not_show"
@@ -219,6 +220,182 @@ init 1 python:          # all needed functions
             if persistent.best_code_active:
                 thread = CustomThread(target=best_codes, args=(db_ac, db_lc))     #generazione del database dei best codes
                 thread.start()      
+        if blacks != 4: #è stato superato il numero massimo di giocate senza indovinare il codice segreto
+            board_open_update()
+            score_update(row)
+            persistent.choice = "none"
+            #renpy.show_screen("tap_main_menu", "GAME OVER", "Tap the menu button")
+            renpy.show_screen("message", "GAME OVER", "Tap the menu button", arrow="arrow_up", arrow_x=930, arrow_y=200)
+        return
+
+    def game1_web(colors):    # ONE PLAYER
+        # """ il giocatore deve indovinare il codice segreto scelto dal programma """   
+        global clicked          
+        global secret_code
+        global draggable
+        global droppable
+        global key_board
+        global board
+        global thread
+        global best_code_ready
+        global copilot_on
+        global copilot
+        global yes_no
+        global start_time
+        global code_played
+        global db_lc
+        global db_bc
+        global code
+        global yes_no
+        #mm = Mastermind_Engine()
+        renpy.call_screen ("message_2_options", "Break the hidden secret code. \n\nCLASSIC: secret code can use repeating colors.\n\nBASIC: secret code uses\nonly single colors.", "CLASSIC", "BASIC")
+        if option == "CLASSIC":
+            db_ac, db_lc, db_bc = init_db(colors)                            #crea il database di tutti i codici, dei left e best codes
+
+        if option == "BASIC":
+            db_ac, db_lc, db_bc = init_db_basic(colors)                            #crea il database di tutti i codici, dei left e best codes
+
+        if option == "exit":
+            persistent.choice = "none"
+            #renpy.show_screen("tap_main_menu", "GAME CANCELED", "Tap the menu button")
+            renpy.show_screen("message", "GAME CANCELED", "Tap the menu button", arrow="arrow_up", arrow_x=930, arrow_y=200)
+            return
+
+        yes_no = ''
+        best_code_ready = False
+        copilot_on = False                                         
+        key_board = []
+        board = []
+        reset_board() 
+        secret_code = random.choice(db_ac)                                  #il programma sceglie il codice segreto tra tutti i codici possibili
+        
+        #secret_code = code_adapter("6543")                               #utilizzo di CS fisso per debugging
+        
+        for i in range(1,5): board[11][i] = int(secret_code[0][i-1])        # mette il codice segreto nella posizione 11 della board
+        # if persistent.best_code_active:
+        #     thread = CustomThread(target=nothing())                          # per fare in modo che il test: if not thread.is_alive():  in menu non dia errore con row = 1
+        #     thread.start()
+        #     thread.join()         
+        start_time = time.time()                                            # usato per lo score 
+        board_close_update()
+        persistent.show_score_update = "game1-game2"   # "game1-game2" "game3" "not_show"
+        persistent.status = "on_game"
+        for row in range (1, 11):  #le giocate massime sono 10 
+            code = [0,0,0,0] #giocata corrente vuota
+            # if row == 1:            # per troubleshooting
+            #     code = [1,2,3,4]
+            copilot = [True] * (colors+1)       # True per ogni colore della color bar che verrà visualizzato da input_game1 
+            inserting_code = True
+            clicked = 99
+            while inserting_code:       #fase di input + test dei clic/drag&drop
+                draggable = False
+                droppable = False
+                if persistent.status == "best_code" and best_code_ready == True:
+                    # if row > 1:
+                    #     db_lc, db_bc = thread.join() 
+                    code = random.choice(db_bc)
+                    #code = db_bc[0]
+                    code = code[0] 
+                    code = [int(code[0]), int(code[1]), int(code[2]), int(code[3])]
+                    renpy.play("audio/peg.mp3")
+                    persistent.status = "on_game"
+                    best_code_ready = False
+                if (clicked == 11):         #click sulla   "i" per info
+                    tot_lc = len(db_lc)
+                    code_status = "incompleto"
+                    chance = 0
+                    left_code = 0
+                    left_code_bs = 0
+                    bs_inconsistent = False
+                    if (clicked == 11) and (code[0] != 0) and (code[1] != 0) and (code[2] != 0) and (code[3] != 0): #E' stata cliccata la "i" per info sulla giocata
+                        i_code = str(code[0])+str(code[1])+str(code[2])+str(code[3])
+                        chance =0
+                        for lc in db_lc:
+                            if i_code == lc[0]:
+                                chance = 1
+                                break
+                        tot_lc = len(db_lc)
+                        i_code = code_adapter(i_code)
+                        key_hits = [0]*25                                           #Ogni campo corrisponde ha un tipo di cod.chiave(1 bianco, 2 bianchi, 1 nero, ...)
+                        for code_lc in db_lc:                                       #per ogni codice di db_loop ripete per tutti i possibili codici segreti 
+                            whites, blacks = find_keycode(i_code, code_lc)  #trova il codice chiave tra i codici di db_loop e quelli di db_lc
+                            key_hits [whites*5 + blacks] +=1                        #incrementa le ricorrenze di codici chiave uguali. *5 simula una tabella a 2 dim
+                        left_code = max(key_hits)
+                        code_status = "best_code_not_ready"
+                        left_code_bs = 0
+                        if persistent.best_code_active:
+                            # if not thread.is_alive() and row > 1:       #i best code sono stati generati
+                            #     db_lc, db_bc = thread.join()
+                            if db_lc[0][0] != db_bc[0][0]:
+                                bs_inconsistent = True
+                            else:
+                                bs_inconsistent = False 
+                            bs_code = db_bc[0]
+                            key_hits = [0]*25                                           #Ogni campo corrisponde ha un tipo di cod.chiave(1 bianco, 2 bianchi, 1 nero, ...)
+                            for code_lc in db_lc:                                       #per ogni codice di db_loop ripete per tutti i possibili codici segreti 
+                                whites, blacks = find_keycode(bs_code, code_lc)  #trova il codice chiave tra i codici di db_loop e quelli di db_lc
+                                key_hits [whites*5 + blacks] +=1                        #incrementa le ricorrenze di codici chiave uguali. *5 simula una tabella a 2 dim
+                            left_code_bs = max(key_hits)
+                            if left_code == left_code_bs:
+                                code_status = "is_best_code"
+                            elif row == 1:
+                                code_status = "best_code_not_ready"
+                            else:
+                                code_status = "is_not_best_code"
+                    clicked = 99
+                    renpy.call_screen ("attempt_info", chance, tot_lc, left_code, left_code_bs, code_status, bs_inconsistent)
+                #board_close_update()  
+                renpy.call_screen ("input_game1", row, colors, code)     # setta draggable e droppable in base ai drag&drop del giocatore
+                code = dragged_code(row, code, draggable, droppable)     # aggiorna il codice in base al risultato di draggable e droppable 
+                for i in range(1,5): board[row][i] = code[i-1]           # aggiorna la board con la giocata che si sta inserendo          
+                if copilot_on:
+                    copilot = copilot_engine(code, db_lc, colors)
+                if (clicked == 10) and (code[0] != 0) and (code[1] != 0) and (code[2] != 0) and (code[3] != 0): #ok spunta verde e controllo che ci siano tutti i 4 colori
+                    inserting_code = False
+                    code_played = code_adapter (str(code[0])+str(code[1])+str(code[2])+str(code[3]))
+                    whites, blacks = find_keycode(secret_code, code_played)               
+                    keycode = converti_keycode (whites, blacks)
+                    for i in range(0,4): key_board[row][i] = keycode[i]
+                    renpy.show_screen ("code_key_update")
+                    if whites + blacks > 0 and blacks != 4: renpy.play("audio/peg.mp3")
+                if persistent.status == "give_up":     # E' stato cliccato lo shield per arrendersi
+                    renpy.call_screen ("are_you_sure", "Do you want to give up?")
+                    if yes_no == "yes":
+                        board_open_update()
+                        #renpy.show_screen("tap_main_menu", "GAME OVER", "Tap the menu button")
+                        renpy.show_screen("message", "GAME OVER", "Tap the menu button", arrow="arrow_up", arrow_x=930, arrow_y=200)
+                        blacks = 0          # serve per evitare errori nel richiamo di score_update
+                        row = 10            # se ci si arrende vengono considerati 10 tentativi
+                        score_update(row)
+                        persistent.choice = "none"
+                        return
+                    else:
+                        persistent.choice = "game1"
+                        persistent.status = "on_game"
+                if persistent.choice == "cancel":         #è stato cliccato "cancel" dal menu
+                    renpy.call_screen ("are_you_sure", "Stop this game?")
+                    if yes_no == "yes":
+                        #renpy.show_screen("tap_main_menu", "GAME OVER", "Tap the menu button")
+                        renpy.show_screen("message", "GAME OVER", "Tap the menu button", arrow="arrow_up", arrow_x=930, arrow_y=200)
+                        persistent.choice = "none"
+                        return
+                    else:
+                        persistent.choice = "game1"
+                if persistent.choice == "help_tips":         #è stato cliccato "help and tips" dal menu
+                    help_tips()
+                    persistent.choice = "game1"
+            if blacks == 4:
+                board_open_update()
+                #renpy.show_screen("tap_main_menu", "YOU WON", "Tap the menu button")
+                renpy.show_screen("message", "YOU WON", "Tap the menu button", arrow="arrow_up", arrow_x=930, arrow_y=200)
+                score_update(row)
+                persistent.choice = "none"
+                break 
+            db_ac, db_lc = left_codes(db_ac, code_played, (whites, blacks))  #genera il db dei left codes e mette il flag True in db_ac per i lc
+            if persistent.best_code_active:
+                db_lc, db_bc = best_codes (db_ac, db_lc)
+                # thread = CustomThread(target=best_codes, args=(db_ac, db_lc))     #generazione del database dei best codes
+                # thread.start()      
         if blacks != 4: #è stato superato il numero massimo di giocate senza indovinare il codice segreto
             board_open_update()
             score_update(row)
@@ -441,7 +618,7 @@ init 1 python:          # all needed functions
         clicked = 99
         board_close_update()
         persistent.show_score_update = "game1-game2"   # "game1-game2" "game3" "not_show"   
-        renpy.call_screen ("message_2_options", "The App will break your secret code.\n\n Do you want to enter the secret code or keep it in mind?", "ENTER", "KEEP IN MIND")
+        renpy.call_screen ("message_2_options", "The device's CPU will try to break your secret code.\n\n Do you want to enter the secret code or keep it in mind?", "ENTER", "KEEP IN MIND")
         if option == "ENTER":     # scelta di inserire il codice segreto - 
             board_open_update()
             while not clicked == 10:       
@@ -707,7 +884,7 @@ init 1 python:          # all needed functions
                             persistent.training_solved_basic_6 = [0] * 787
                         if colors == 8 and training_type == "BASIC":
                             persistent.training_solved_basic_8 = [0] * 2450   
-                        renpy.call_screen ("message_x", "TRAINING RESET", "All " + training_type + " Training games based on " + str(colors) + " colors, have been reset and you restart from first game.")
+                        renpy.call_screen ("message_x", "TRAINING RESET", "All " + training_type + " Training games based on " + str(colors) + " colors, have been reset.")
                         x = 0
                         inserting_code = False  
                     persistent.choice = "training"
@@ -754,7 +931,13 @@ init 1 python:          # all needed functions
 
     def score():          # SCORE
         global score_option
+        global board
+        global key_board
         score_option = ''
+        board = []
+        key_board = []
+        reset_board() 
+        board_close_update()
         while score_option != "exit":
             renpy.call_screen("score_menu")
             if score_option == "check_score_game1_2":
@@ -1145,17 +1328,23 @@ screen input_game1(row, colors, code):     # input delle giocate + checkmark ver
             imagebutton:
                 ypos 250
                 xpos 5
-                if not thread.is_alive():       #i best code sono stati generati
+                if not renpy.emscripten:
+                    if not thread.is_alive():       #i best code sono stati generati
+                        idle "best_code_ready"
+                        hover Transform("best_code_ready", size=(170, 170), fit="contain")
+                        #hover "best_code_ready"
+                        action SetVariable("persistent.status", "best_code"), SetVariable("best_code_ready", True), Return()
+                    else:
+                        idle "best_code_processing"
+                        hover Transform("best_code_processing2", size=(170, 170), fit="contain")
+                        #hover "best_code_processing"
+                        action Return()
+                else:
                     idle "best_code_ready"
                     hover Transform("best_code_ready", size=(170, 170), fit="contain")
                     #hover "best_code_ready"
                     action SetVariable("persistent.status", "best_code"), SetVariable("best_code_ready", True), Return()
-                else:
-                    idle "best_code_processing"
-                    hover Transform("best_code_processing2", size=(170, 170), fit="contain")
-                    #hover "best_code_processing"
-                    action Return()
-        
+      
 screen input_game2(row, key_code):     # input dei key code + checkmark verde + bottone shield di rinuncia
     fixed:
         xsize 1080
@@ -1477,9 +1666,8 @@ screen settings_menu():   # menu settings per numbers of colors, switch music on
             if not persistent.sound:
                 textbutton "• Switch Music On":
                     action SetVariable("pref_option", "music"), SetVariable("persistent.sound", True), Play("music", "Gershon Kingsley - Pop Corn 1969.mp3"), Return()
-            if not renpy.emscripten:
-                textbutton "• Best Code feature":
-                        action SetVariable("pref_option", "best_code"), Return()
+            textbutton "• Best Code feature":
+                    action SetVariable("pref_option", "best_code"), Return()
 
 screen numbers_of_colors():     # richiamato dallo screen settings_menu 
     ## Ensure other screens do not get input while this screen is displayed.
@@ -1566,15 +1754,16 @@ screen help_tips_view():  # menu Help and Tips
 
     $ message = "• {color=#f20070}ONE PLAYER{/color} You will try to break the secret code chosen randomly by the App.\
     \n• if you want to give up and see the secret code, tap the shield on the game board\
-    \n• You can find the game rules {a=https://mastermind.altervista.org/rules-of-the-game/}here {/a}.\n\n"
+    \n• Other features are explained later in this section\
+    \n• For the game rules, tap {a=https://mastermind.altervista.org/rules-of-the-game/}here {/a}.\n\n"
    
     $ message = message + "• {color=#f20070}TWO PLAYERS{/color} Challenge between two players using the same device.\
     \n• Player 1 and player 2 will take turns to break the secret code hidden by the opponent.\
     \n• Player 1's score is marked with white pegs and player 2's with black pegs.\n\n"
 
-    $ message = message + "• {color=#f20070}CPU PLAYER{/color} The device's CPU will break your hidden secret code. \n\n"
+    $ message = message + "• {color=#f20070}CPU PLAYER{/color} The device's CPU will try to break your hidden secret code. \n\n"
 
-    $ message = message + '• {color=#f20070}TRAINING{/color} will help improve your game skills.\
+    $ message = message + '• {color=#f20070}TRAINING{/color} You will improve your game skills.\
     \n• You can choose to play with 6 or 8 colors from "SETTINGS" and then "Number of Colors".\
     \n• "CLASSIC" Secret code can use repeating colors.\
     \n• "BASIC" Secret code uses only single colors.\
@@ -1588,19 +1777,19 @@ screen help_tips_view():  # menu Help and Tips
     \n• In TWO PLAYERS game, the score is relative to the two opposing players\n\n"
 
     $ message = message + "• {color=#f20070}SETTINGS.{/color}\n• Number of colors: This setting affecting all game types.\
-    \n• Switch music on: to hear popcorn song during the game.\n• Best code feauture: enable/disable Best code feature.\n\n" 
+    \n• Switch music on: to hear popcorn song while playing.\n• Best code feauture: enable/disable Best code feature.\n\n" 
 
     $ message = message + "{color=#f20070}Interrupting a game.{/color} Tap the menu button and choose CANCEL.\n\n"
 
-    $ message = message + "{color=#f20070}Drag and Drop.{/color} Drag and drop pegs to compose your attempts.\
-    \n• You can take pegs from attempts already played, move a peg to another placeholder.\n• To remove a peg, drag it out.\n\n"
+    $ message = message + "{color=#f20070}Drag and Drop.{/color} To compose your code, grab pegs from the side column of colors and drop them into the highlighted placeholders.\
+    \n• You can take pegs from attempts already played or move a peg to another placeholder.\n• To remove a peg, drag it out.\n\n"
 
     $ message = message + "{color=#f20070}Info {/color}Tells you how many chances of breaking the secret code you have,\
     and how many you'd have, should you use the best code feature.\n\n"
     
-    $ message = message + "{color=#f20070}Copilot{/color} helps you choose a possible secret code.\
+    $ message = message + "{color=#f20070}Copilot{/color} Helps you choose a possible secret code.\
     Based on the pegs already chosen, it excludes those that would make the attempt iconsistent.\
-    \n• An INCONSISTENT attempt has zero chance of breaking the secret code.\n\n"
+    \n• An inconsistent attempt has zero chance of breaking the secret code.\n\n"
 
     $ message = message + "{color=#f20070}Best code{/color} This feature provides the code that, \
     in case it does not breaks the secret code, is the one that has the greatest chance of breaking it on the next attempt.\n"
@@ -1609,10 +1798,11 @@ screen help_tips_view():  # menu Help and Tips
     you will find the explanation why an inconsistent code can be a best code anyway.\n"
     
     $ message = message + "• The best code is generated in the background. To check if it is ready tap the Best Code \
-    button. For slow devices, disable this feature from settings menu. (Available in ONE PLAYER)\n\n"
+    button. For slow devices, disable this feature from settings menu.\n\n"
     
-    $ message = message + "• {color=#f20070}Bonus.{/color} Enjoy a video of a LEGO creation breaking Master Mind secret\
-    code:\n{size=-15}{a=https://mastermind.altervista.org/lego-robot-inventor/}https://mastermind.altervista.org/lego-robot-inventor{/a}{/size}"
+    $ message = message + "• {color=#f20070}Bonus{/color} Enjoy a video of a LEGO creation breaking Master Mind secret\
+    code: {size=-22}{a=https://mastermind.altervista.org/lego-robot-inventor/}https://mastermind.altervista.org/lego-robot-inventor{/a}{/size}\
+    \nFind more Master Mind related stuff on the same site."
     
     frame:
         area(10, 10, 1060, 1900)  # Adjust as needed
@@ -1644,7 +1834,7 @@ screen welcome_message():   # messaggio per il primo avvio dell'app
     zorder 200
     style_prefix "confirm"
     add "gui/overlay/confirm.png"
-    $ message = """{size=+26}{color=#0099ff}{font=fonts/joystix monospace.otf} Master Mind {/font}{/color}{/size}\n\nThis App offers you a gaming experience of the Classic version of Master Mind.\n\nYou will also discover two exclusive features: {color=#0099ff}"Copilot"{/color} and {color=#0099ff}"Best Code"{/color}.\n\n{size=+20}{color=#0099ff}Have fun!!{/color}{/size}"""
+    $ message = """{size=+26}{color=#0099ff}{font=fonts/joystix monospace.otf} Master Mind {/font}{/color}{/size}\n\nThe true and classic\nMaster Mind that uses the original board game from the 70s/80s.\n\nYou will also discover two exclusive features: {color=#0099ff}"Copilot"{/color} and {color=#0099ff}"Best Code"{/color}.\n\n{size=+20}{color=#0099ff}Have fun!!{/color}{/size}"""
     
     frame:
         yalign 0.65
@@ -1662,15 +1852,11 @@ screen welcome_message():   # messaggio per il primo avvio dell'app
                 #text_size 50
                 #text_color "#030331"
                 xalign 0.5
-            # hbox:
-            #     xalign 0.5
-            #     spacing 150
-            #     textbutton _("• Do not show\nthis message again"):
-            #         #text_size 50
-            #         text_color "#000078"
-            #         text_hover_color "#0099ff"
-            #         #text_bold True
-            #         action SetVariable("persistent.welcome", False), Hide("welcome_message"), Return()
+            imagebutton:
+                    xalign 1.0
+                    idle "x"
+                    hover "x"
+                    action Hide("welcome_message"), Return()
 
 screen print_mastermind():   #visualizza la scritta MASTER MIND
     fixed:

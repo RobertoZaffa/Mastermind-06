@@ -136,7 +136,7 @@
         db_loop = []                                                    #lista temporanea                                           
         """ Se i possibili codici segreti sono molti, i codici per la simulazione saranno i left codes. Evita che il loop richieda troppo tempo per l'esecuzione.
             Produce db_loop con [10] = a max_hit e [11] con num_of_zero. Fornisce anche min_of_max  """
-        if (len(db_lc) > 252 and colors == 6) or (len(db_lc) > 80 and colors == 8):    
+        if (len(db_lc) > 252 and colors == 6) or (len(db_lc) > 80 and colors == 8) or renpy.emscripten:    
             db_loop = db_lc                                             
         else:
             db_loop = db_ac
